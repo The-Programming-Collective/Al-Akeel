@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.jboss</groupId>
+    <artifactId>jboss-parent</artifactId>
+    <version>23.0.0.redhat-1</version>
+    <relativePath />
+  </parent>
+
+  <groupId>com.redhat.project</groupId>
+  <artifactId>Al-Akeel</artifactId>
+  <version>1.0</version>
+  <packaging>war</packaging>
+
+  <properties>
+    <root.dir>${project.basedir}</root.dir>
+    <version.wildfly.maven.plugin>1.2.0.Beta1</version.wildfly.maven.plugin>
+
+    <version.com.mycyla.license>3.0</version.com.mycyla.license>
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <version.spring.framework>4.3.10.RELEASE</version.spring.framework>
+    <version.server.bom>7.1.0.GA</version.server.bom>
+
+    <version.jboss.spec.javaee.7.0>1.1.0.Final-redhat-3</version.jboss.spec.javaee.7.0>
+
+    <version.jaxws-tools-maven-plugin>1.2.0.Final</version.jaxws-tools-maven-plugin>
+
+    <version.ro.isdc.wro4j>1.7.9</version.ro.isdc.wro4j>
+    <httpclient.version>4.5.2.redhat-1</httpclient.version>
+    <version.org.apache.commons.commons-lang3>3.5</version.org.apache.commons.commons-lang3>
+    <version.h2db>1.4.193.redhat-2</version.h2db>
+    <version.org.wildfly.checkstyle-config>1.0.6.Final</version.org.wildfly.checkstyle-config>
+    <linkXRef>false</linkXRef>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <version>${version.h2db}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>2.5.0.redhat-2</version>
+        <scope>compile</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>1.2</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${version.org.apache.commons.commons-lang3}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>${httpclient.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.jboss.bom</groupId>
+        <artifactId>jboss-eap-javaee7-with-tools</artifactId>
+        <version>${version.server.bom}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.jboss.spec</groupId>
+        <artifactId>jboss-javaee-7.0</artifactId>
+        <version>${version.jboss.spec.javaee.7.0}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.annotation</groupId>
+          <artifactId>jsr250-api</artifactId>
+        </exclusion>
+
+        <exclusion>
+          <groupId>javax.el</groupId>
+          <artifactId>javax.el-api</artifactId>
+        </exclusion>
+
+        <exclusion>
+          <groupId>javax.interceptor</groupId>
+          <artifactId>javax.interceptor-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hibernate.javax.persistence</groupId>
+      <artifactId>hibernate-jpa-2.1-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.spec.javax.ejb</groupId>
+      <artifactId>jboss-ejb-api_3.2_spec</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.spec.javax.ws.rs</groupId>
+      <artifactId>jboss-jaxrs-api_2.0_spec</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jboss-enterprise-maven-repository</id>
+      <url>https://maven.repository.redhat.com/ga/</url>
+    </repository>
+
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jboss-enterprise-maven-repository-ea</id>
+      <url>https://maven.repository.redhat.com/earlyaccess/all/</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jboss-enterprise-maven-repository</id>
+      <url>https://maven.repository.redhat.com/ga/</url>
+    </pluginRepository>
+
+    <pluginRepository>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jboss-enterprise-maven-repository-ea</id>
+      <url>https://maven.repository.redhat.com/earlyaccess/all/</url>
+    </pluginRepository>
+
+    <pluginRepository>
+      <id>jboss-public-repository-group</id>
+      <name>JBoss Public Maven Repository Group</name>
+      <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.wildfly.plugins</groupId>
+          <artifactId>wildfly-maven-plugin</artifactId>
+          <version>${version.wildfly.maven.plugin}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-ejb-plugin</artifactId>
+          <version>${version.ejb.plugin}</version>
+          <configuration>
+            <ejbVersion>3.2</ejbVersion>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>${version.checkstyle.plugin}</version>
+          <configuration>
+            <configLocation>wildfly-checkstyle/checkstyle.xml</configLocation>
+            <includeTestSourceDirectory>true</includeTestSourceDirectory>
+            <sourceDirectories>
+              <directory>${project.build.sourceDirectory}</directory>
+            </sourceDirectories>
+            <resourceIncludes>**/*.properties,**/*.xml</resourceIncludes>
+            <includeTestResources>true</includeTestResources>
+            <includeResources>true</includeResources>
+            <consoleOutput>true</consoleOutput>
+            <failsOnError>true</failsOnError>
+            <failOnViolation>true</failOnViolation>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>org.wildfly.checkstyle</groupId>
+              <artifactId>wildfly-checkstyle-config</artifactId>
+              <version>${version.org.wildfly.checkstyle-config}</version>
+            </dependency>
+          </dependencies>
+          <executions>
+        
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+</project>
