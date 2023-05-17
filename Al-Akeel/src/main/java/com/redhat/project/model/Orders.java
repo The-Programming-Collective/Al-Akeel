@@ -7,13 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-enum OrderStatus{
-    PREPARING, DELIVERED, CANCELED
-}
+import javax.persistence.OneToOne;
 
 @Entity
 public class Orders implements Serializable{
+    public enum OrderStatus{PREPARING, DELIVERED, CANCELED}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,42 +21,23 @@ public class Orders implements Serializable{
     private OrderStatus orderStatus;
     private ArrayList<Meal> itemsList;
     private Restaurant restaurant;
+
+    @OneToOne(mappedBy = "order")
     private Runner runner;
 
-    public Runner getRunner() {
-        return runner;
-    }
-    public void setRunner(Runner runner) {
-        this.runner = runner;
-    }
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
-    }
-    public ArrayList<Meal> getItemsList() {
-        return itemsList;
-    }
-    public void setItemsList(ArrayList<Meal> itemsList) {
-        this.itemsList = itemsList;
-    }
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-    public OrderStatus getOrderStatus() {
-        return orderStatus;
-    }
-    public void setOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
+    // Getters
+    public Runner getRunner() {return runner;}
+    public Restaurant getRestaurant() {return restaurant;}
+    public ArrayList<Meal> getItemsList() {return itemsList;}
+    public double getTotalPrice() {return totalPrice;}
+    public OrderStatus getOrderStatus() {return orderStatus;}
+    public String getName() {return name;}
+
+    // Setters
+    public void setRunner(Runner runner) {this.runner = runner;}
+    public void setRestaurant(Restaurant restaurant) {this.restaurant = restaurant;}
+    public void setItemsList(ArrayList<Meal> itemsList) {this.itemsList = itemsList;}
+    public void setTotalPrice(double totalPrice) {this.totalPrice = totalPrice;}
+    public void setOrderStatus(OrderStatus orderStatus) {this.orderStatus = orderStatus;}
+    public void setName(String name) {this.name = name;}
 }

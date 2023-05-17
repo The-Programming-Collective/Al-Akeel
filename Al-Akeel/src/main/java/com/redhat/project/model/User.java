@@ -6,21 +6,26 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 
-enum Role{
-    CUSTOMER, RESTUARANT_OWNER, RUNNER
-}
+
 
 @Entity
 public class User implements Serializable {
+    public enum Role{CUSTOMER, RESTUARANT_OWNER, RUNNER}
+    
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
-    
     private String name;
     private Role role;
 
+    @OneToOne(mappedBy = "owner")
+    private Restaurant restaurant;
+
+
+    // Getters
     public int getId(){return this.id;}
     public String getName(){return this.name;}
     public Role getRole(){return this.role;}

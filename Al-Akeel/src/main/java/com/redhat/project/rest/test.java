@@ -16,6 +16,8 @@ import com.redhat.project.model.Orders;
 import com.redhat.project.model.Restaurant;
 import com.redhat.project.model.Runner;
 import com.redhat.project.model.User;
+import com.redhat.project.model.User.Role;
+
 
 
 @Stateless
@@ -31,14 +33,21 @@ public class test {
     @Path("")
     public void persistUser(){
         User user = new Runner();
+        User owner = new User();
+        owner.setName("ali");
+        owner.setRole(Role.RESTUARANT_OWNER);
         user.setName("ahmed");
         Orders order = new Orders();
         order.setName("testOrder");
         Restaurant res = new Restaurant("koshary el tahrir", null);
+        res.setOwner(owner);
         // order.setRestaurant(res);
+
         entityManager.persist(user);
+        entityManager.persist(owner);
         entityManager.persist(order);
         entityManager.persist(res);
+
     }
 
     @GET
