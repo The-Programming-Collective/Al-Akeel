@@ -12,7 +12,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import com.redhat.project.model.*;
+import com.redhat.project.model.Orders;
+import com.redhat.project.model.Runner;
+import com.redhat.project.model.User;
 
 
 @Stateless
@@ -25,27 +27,30 @@ public class test {
 
 
     @POST
-    @Path("persist")
+    @Path("")
     public void persistUser(){
-        Runner runner = new Runner();
-        runner.setName("test");
-        Order order = new Order();
-        order.setRunner(runner);
-        order.setTotalPrice(2.5);
-        order.setRestuarant(new Restuarant());
-        runner.setOrder(order);
-
-        entityManager.persist(runner);
+        User user = new Runner();
+        user.setName("ahmed");
+        Orders order = new Orders();
+        order.setName("testOrder");
+        entityManager.persist(user);
         entityManager.persist(order);
     }
 
     @GET
-    @Path("get")
-    public List<Runner> getRunner(){
-        TypedQuery<Runner> query = entityManager
-        .createQuery("select r from Runner r", Runner.class);
+    @Path("")
+    public List<User> getRunner(){
+        TypedQuery<User> query = entityManager
+        .createQuery("select r from User r", User.class);
         return query.getResultList();
     }
 
+    @GET
+    @Path("order")
+    public List<Orders> getOrder(){
+        TypedQuery<Orders> query = entityManager
+        .createQuery("select o from Orders o", Orders.class);
+        return query.getResultList();
+    }
 
 }

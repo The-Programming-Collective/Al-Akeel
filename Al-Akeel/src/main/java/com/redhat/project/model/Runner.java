@@ -1,6 +1,9 @@
 package com.redhat.project.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
@@ -10,28 +13,27 @@ enum Status{
 
 @Entity
 public class Runner extends User{
-    public Runner(){
-        this.deliveryFees = 0;
-        this.status = Status.AVAILABLE;
-        this.order = null;
-        this.role = Role.RUNNER;
-    }
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int id;
     
     
     private double deliveryFees;
     private Status status;
 
     @OneToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
+    @JoinColumn(name = "order")
+    private Orders orders;
 
-    //getters
+    // Getters
+    public int getId(){return this.id;}
     public double getDeliveryFees(){return this.deliveryFees;}
     public Status geStatus(){return this.status;}
-    public Order getOrder(){return this.order;}
+    public Orders getOrder(){return this.orders;}
 
-    //setters
+    // Setters
+    public void setId(int id){this.id = id;}
     public void setDeliveryFees(double fees){this.deliveryFees = fees;}
     public void setStatus(Status status){this.status = status;}
-    public  void setOrder(Order order){this.order = order;}
+    public  void setOrder(Orders orders){this.orders = orders;}
 }

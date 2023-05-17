@@ -10,12 +10,6 @@ import javax.persistence.Id;
 @Entity
 public class Meal implements Serializable {
 
-
-    public Meal(){
-        this.name=null;
-        this.price=0;
-    }
-    
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
@@ -25,18 +19,16 @@ public class Meal implements Serializable {
     
     // foreign keys
     // fk_restuarantId;
- 
-    //getters
+
+    // Getters
     public int getId() {return id;}
     public String getName() {return name;}
     public double getPrice() {return price;}
 
-    //setters
+    // Setters
     public void setId(int id) {this.id = id;}
     public void setName(String name) {this.name = name;}
     public void setPrice(double price) {this.price = price;}
-
-
 
 
 
