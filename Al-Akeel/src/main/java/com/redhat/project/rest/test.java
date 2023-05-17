@@ -13,6 +13,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import com.redhat.project.model.Orders;
+import com.redhat.project.model.Restaurant;
 import com.redhat.project.model.Runner;
 import com.redhat.project.model.User;
 
@@ -33,8 +34,11 @@ public class test {
         user.setName("ahmed");
         Orders order = new Orders();
         order.setName("testOrder");
+        Restaurant res = new Restaurant("koshary el tahrir", null);
+        // order.setRestaurant(res);
         entityManager.persist(user);
         entityManager.persist(order);
+        entityManager.persist(res);
     }
 
     @GET
@@ -45,11 +49,21 @@ public class test {
         return query.getResultList();
     }
 
+
+    //working
     @GET
     @Path("order")
     public List<Orders> getOrder(){
         TypedQuery<Orders> query = entityManager
         .createQuery("select o from Orders o", Orders.class);
+        return query.getResultList();
+    }
+
+    @GET
+    @Path("res")
+    public List<Restaurant> getRes(){
+        TypedQuery<Restaurant> query = entityManager
+        .createQuery("select o from Restaurant o", Restaurant.class);
         return query.getResultList();
     }
 

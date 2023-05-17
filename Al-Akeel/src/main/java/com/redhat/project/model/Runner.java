@@ -4,8 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 
 enum Status{
     AVAILABLE, BUSY
@@ -21,8 +19,8 @@ public class Runner extends User{
     private double deliveryFees;
     private Status status;
 
-    @OneToOne
-    @JoinColumn(name = "order")
+    // @OneToOne
+    // @JoinColumn(name = "order")
     private Orders orders;
 
     // Getters

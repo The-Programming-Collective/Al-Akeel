@@ -25,7 +25,7 @@ public class User implements Serializable {
     public String getName(){return this.name;}
     public Role getRole(){return this.role;}
 
-    //setters 
+    // Setters
     public void setId(int id){this.id = id;}
     public void setName(String name){this.name = name;}
     public void setRole(Role role){this.role = role;}

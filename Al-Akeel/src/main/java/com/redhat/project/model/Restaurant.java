@@ -7,23 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
 
 @Entity
 public class Restaurant implements Serializable {
 
-    public Restuarant(String name, User owner, ArrayList<Meal> mealsList){
+    public Restaurant(String name,  ArrayList<Meal> mealsList){
         this.name = name;
         this.lifeTimeEarnings = 0;
         this.mealsList = mealsList;
-        this.owner = owner;
-    } 
-
-    
-    
+    }
+    public Restaurant(){}
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -33,30 +26,39 @@ public class Restaurant implements Serializable {
     private String name;
     private double lifeTimeEarnings;
     
-    @NotNull
-    @OneToMany
-    @JoinColumn(name = "meal_id")
+    // @NotNull
+    // @OneToMany
+    // @JoinColumn(name = "meal_id")
     private ArrayList<Meal> mealsList;
 
-    @NotNull
-    @OneToOne
-    @JoinColumn(name = "owner_id")
-    private User owner;
+    // @NotNull
+    // @OneToOne
+    // @JoinColumn(name = "owner_id")
+    // private User owner;
     
-    // Getters
-    public int getId() {return id;}
-    public String getName() {return name;}
-    public User getOwner() {return owner;}
-    public ArrayList<Meal> getMealsList() {return mealsList;}
-    public double getLifeTimeEarnings() {return lifeTimeEarnings;}
+    public String getName() {
+        return name;
+    }
 
-    
-    // Setters
-    public void setId(int id) {this.id = id;}
-    public void setName(String name) {this.name = name;}
-    public void setOwner(User owner) {this.owner = owner;}
-    public void setLifeTimeEarnings(double lifeTimeEarnings) {this.lifeTimeEarnings = lifeTimeEarnings;}
-    
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getLifeTimeEarnings() {
+        return lifeTimeEarnings;
+    }
+
+    public void setLifeTimeEarnings(double lifeTimeEarnings) {
+        this.lifeTimeEarnings = lifeTimeEarnings;
+    }
+
+    public ArrayList<Meal> getMealsList() {
+        return mealsList;
+    }
+
+    public void setMealsList(ArrayList<Meal> mealsList) {
+        this.mealsList = mealsList;
+    }
 
     public void addMeal(Meal meal){
         mealsList.add(meal);
