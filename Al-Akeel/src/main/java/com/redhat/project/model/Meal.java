@@ -9,15 +9,22 @@ import javax.persistence.Id;
 
 @Entity
 public class Meal implements Serializable {
+
+
+    public Meal(){
+        this.name=null;
+        this.price=0;
+    }
+    
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
     private String name;
     private double price;
  
+    
     // foreign keys
     // fk_restuarantId;
- 
  
     //getters
     public int getId() {return id;}

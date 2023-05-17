@@ -16,6 +16,12 @@ enum Role{
 
 @Entity
 public class User implements Serializable {
+    
+    public User(){
+        this.name=null;
+        this.role=null;
+    }
+
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
@@ -33,6 +39,10 @@ public class User implements Serializable {
     public void setId(int id){this.id = id;}
     public void setName(String name){this.name = name;}
     public void setRole(Role role){this.role = role;}
+
+
+    
+
 
 
 
