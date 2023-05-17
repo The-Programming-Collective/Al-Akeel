@@ -1,0 +1,6 @@
+User: Id ,name, role
+Meal: id, name , price, fk_restaurantId
+Order: Id, Item array, total_price, fk_runnerId, fk_restaurantId, order_status(preparing, delivered,
+canceled )
+Runner: Id, name, status(available, busy),delivery_fees
+Restaurant: Id, name, ownerId, list of meals

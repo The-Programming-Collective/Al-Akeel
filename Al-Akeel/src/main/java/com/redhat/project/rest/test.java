@@ -12,6 +12,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import com.redhat.project.model.Meal;
 import com.redhat.project.model.Orders;
 import com.redhat.project.model.Restaurant;
 import com.redhat.project.model.Runner;
@@ -32,18 +33,32 @@ public class test {
     @POST
     @Path("")
     public void persistUser(){
-        User user = new Runner();
+        Runner runner = new Runner();
+        runner.setName("ahmed");
+        
         User owner = new User();
         owner.setName("ali");
         owner.setRole(Role.RESTUARANT_OWNER);
-        user.setName("ahmed");
+        
+        
+        Restaurant res = new Restaurant("koshary el tahrir");
+        res.setOwner(owner);
+        
         Orders order = new Orders();
         order.setName("testOrder");
-        Restaurant res = new Restaurant("koshary el tahrir", null);
-        res.setOwner(owner);
-        // order.setRestaurant(res);
+        order.setRestaurant(res);
+        order.setRunner(runner);
 
-        entityManager.persist(user);
+
+        Meal meal = new Meal("koshary",4.5);
+        
+        res.addMeal(meal);
+        order.addItem(meal);
+
+        // res.getMealsList().iterator().next().getName();
+        
+        entityManager.persist(meal);
+        entityManager.persist(runner);
         entityManager.persist(owner);
         entityManager.persist(order);
         entityManager.persist(res);
@@ -75,5 +90,14 @@ public class test {
         .createQuery("select o from Restaurant o", Restaurant.class);
         return query.getResultList();
     }
+
+    @GET
+    @Path("meal")
+    public List<Meal> getMeal(){
+        TypedQuery<Meal> query = entityManager
+        .createQuery("select o from Meal o", Meal.class);
+        return query.getResultList();
+    }
+    
 
 }

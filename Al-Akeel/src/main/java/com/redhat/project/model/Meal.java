@@ -6,16 +6,29 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Meal implements Serializable {
 
+    // Default
+    public Meal(){}
+    public Meal(String name , double price){
+        this.name = name ;
+        this.price = price;
+    }
+    
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
     private String name;
     private double price;
- 
+
+    @ManyToOne
+    @JoinColumn(name = "restaurant")
+    private Restaurant restaurant;
+
     
     // foreign keys
     // fk_restuarantId;
@@ -24,12 +37,11 @@ public class Meal implements Serializable {
     public int getId() {return id;}
     public String getName() {return name;}
     public double getPrice() {return price;}
-
+    
     // Setters
     public void setId(int id) {this.id = id;}
     public void setName(String name) {this.name = name;}
     public void setPrice(double price) {this.price = price;}
-
 
 
 }
