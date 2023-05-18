@@ -1,11 +1,8 @@
 package com.redhat.project.services;
 
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import com.redhat.project.model.Restaurant;
 
 // Create order by customer
 // Exceptations: imagine a normal restaurant receipt

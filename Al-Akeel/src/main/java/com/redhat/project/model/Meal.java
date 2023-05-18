@@ -10,16 +10,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
 
 @Entity
 public class Meal implements Serializable {
 
     // Default
     public Meal(){}
-    public Meal(String name , double price){
+    public Meal(String name , double price, Restaurant restaurant){
         this.name = name ;
         this.price = price;
+        this.restaurant = restaurant;
+        this.avaliable = true;
     }
     
     @Id
@@ -27,8 +28,16 @@ public class Meal implements Serializable {
     private int id;
     private String name;
     private double price;
+    private boolean avaliable;
 
-    @NotNull
+    public boolean isAvaliable() {
+        return avaliable;
+    }
+    public void setAvaliable(boolean avaliable) {
+        this.avaliable = avaliable;
+    }
+
+    // @NotNull
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;

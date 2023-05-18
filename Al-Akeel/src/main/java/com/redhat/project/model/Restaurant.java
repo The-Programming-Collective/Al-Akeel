@@ -15,7 +15,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-//SELECT e from Employee e where e.salary >:sal
+
 @Entity
 @NamedQueries({
     @NamedQuery(name = "getRestaurant", query = "SELECT r from Restaurant r where r.id =:res_id and r.owner.id=:owner_id"),
@@ -57,7 +57,17 @@ public class Restaurant implements Serializable {
     // Getters
     public int getId() {return id;}
     public String getName() {return name;}
-    public Set<Meal> getMealsList() {return mealsList;}
+    public Set<Meal> getMealsList() { 
+        Set<Meal> returnedSet = new HashSet<Meal>();
+
+        for (Meal item : mealsList) {
+            if(item.isAvaliable()){
+                returnedSet.add(item);
+            }
+        }
+
+        return returnedSet;
+    }
     public User getOwner() {return owner;}
     
     
@@ -65,8 +75,9 @@ public class Restaurant implements Serializable {
     public void setId(int id) {this.id = id;}
     public void setOwner(User owner) {this.owner = owner;}
     public void setName(String name) {this.name = name;}
+    public void setMealsList(Set<Meal> mealsList){this.mealsList = mealsList;}
     
     public void addMeal(Meal meal){mealsList.add(meal);}
-    public void removeMeal(Meal meal){mealsList.remove(meal);}
+    public void removeMeal(Meal meal){meal.setAvaliable(false);mealsList.remove(meal);}
     
 }

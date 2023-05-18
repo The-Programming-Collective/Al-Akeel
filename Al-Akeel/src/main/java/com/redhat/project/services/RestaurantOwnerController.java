@@ -12,7 +12,7 @@ import com.redhat.project.model.Meal;
 import com.redhat.project.model.Restaurant;
 
 // ■ Create restaurant menu
-// ■ Edit restaurant: change menu meals for each restaurant TODO:
+// ■ Edit restaurant: change menu meals for each restaurant [DONE]
 // ■ Get restaurant details by id [DONE]
 // ■ Create restaurant report: given a restaurant id print
 // how much the restaurant earns (summation of total amount of all completed orders) , Number of completed orders, Number of canceled orders
@@ -23,13 +23,12 @@ public class RestaurantOwnerController {
     @PersistenceContext(unitName = "persistUnit")
     private EntityManager entityManager;
     private Restaurant restaurant;
-
-    public RestaurantOwnerController(){}
     
     public List<Restaurant> getRestaurant(int restaurant_id, int owner_id) throws Exception{
         TypedQuery<Restaurant> q = entityManager.createNamedQuery("getRestaurant",Restaurant.class);
         q.setParameter("res_id", restaurant_id);
         q.setParameter("owner_id", owner_id);
+
         List<Restaurant> res = q.getResultList();
 
         if(res.size()!=0){restaurant=res.get(0);}
@@ -38,27 +37,68 @@ public class RestaurantOwnerController {
     }
 
 
-    public void createMenu(){
-
-    }
-
     public Set<Meal> getMenu(){
         return restaurant.getMealsList();
     }
 
-    public void addMenuMeal(Meal meal){
-        // entityManager
-        // restaurant.addMeal(meal);
-    }
-    public void removeMenuMeal(int meal_id){
+    public void setMenu(Set<Meal> menu){
+        Set<Meal> oldMenu =  restaurant.getMealsList();
 
-    }
-    public void updateMenuMeal(int meal_id, Meal meal){
+        for(Meal item: oldMenu){
+            System.out.println(item.getName());
+            item.setAvaliable(false);
+            entityManager.merge(item);
+        }
+
+        for (Meal item : menu) {
+            item.setRestaurant(restaurant);
+            item.setAvaliable(true);
+            entityManager.persist(item);
+        }
         
+        restaurant.setMealsList(menu);
     }
+
+
+    public void addMenuMeal(Meal meal){
+        meal.setRestaurant(restaurant);
+        meal.setAvaliable(true);
+        restaurant.addMeal(meal);
+        entityManager.persist(meal);
+    }
+
+
+    public void removeMenuMeal(int meal_id){
+        Meal meal = entityManager.find(Meal.class, meal_id);
+        restaurant.removeMeal(meal);
+    }
+
+
+    public void updateMenuMeal(int meal_id, Meal meal){
+        // Meal oldMeal = entityManager.find(Meal.class,meal_id);
+        
+        System.out.println("============OVERHERE===========");
+        System.out.println(meal.getName());
+        System.out.println("============OVERHEREBITCH===========");
+
+        // oldMeal.setAvaliable(meal.isAvaliable());
+        // oldMeal.setName(meal.getName());
+        // oldMeal.setPrice(meal.getPrice());
+        // entityManager.merge(oldMeal);
+    }
+
 
     public void createReport(){
 
     }
+
+    // {
+    //     "meal_id": 1,
+    //     "Meal": {
+    //         "name": "meal1",
+    //         "price": 10,
+    //         "avaliable": true
+    //     }
+    // }
 
 }
