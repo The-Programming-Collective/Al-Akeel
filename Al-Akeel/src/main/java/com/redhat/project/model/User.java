@@ -1,12 +1,14 @@
 package com.redhat.project.model;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 
 
@@ -21,8 +23,8 @@ public class User implements Serializable {
     private String name;
     private Role role;
 
-    @OneToOne(mappedBy = "owner")
-    private Restaurant restaurant;
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    private Set<Restaurant> restaurant;
 
 
     // Getters

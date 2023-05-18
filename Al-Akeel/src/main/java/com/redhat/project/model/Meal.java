@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Meal implements Serializable {
@@ -27,6 +28,7 @@ public class Meal implements Serializable {
     private String name;
     private double price;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;

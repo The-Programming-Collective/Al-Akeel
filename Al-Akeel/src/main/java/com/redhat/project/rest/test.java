@@ -11,7 +11,9 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 import com.redhat.project.model.Meal;
 import com.redhat.project.model.Orders;
@@ -22,10 +24,9 @@ import com.redhat.project.model.User.Role;
 import com.redhat.project.services.RestaurantOwnerController;
 
 
-
 @Stateless
 @Consumes("application/json")
-@Produces("application/json")   
+@Produces("application/json")  
 @Path("/")
 public class test {
     @PersistenceContext(unitName = "persistUnit")
@@ -111,8 +112,8 @@ public class test {
 
     @GET
     @Path("restaurants")
-    public Object getRestaurant() throws Exception{
-        List<Restaurant> res =  roc.getRestaurant(1);
+    public Object getRestaurant(@QueryParam("restaurant_id") int restaurant_id, @QueryParam("owner_id") int owner_id) throws Exception{
+        List<Restaurant> res =  roc.getRestaurant(restaurant_id,owner_id);
         return res;
     }
     

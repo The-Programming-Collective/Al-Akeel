@@ -10,13 +10,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 //SELECT e from Employee e where e.salary >:sal
 @Entity
-@NamedQuery(name = "getRestaurant", query = "SELECT r from Restaurant r where r.owner.id =:owner_id")
+@NamedQueries({
+    @NamedQuery(name = "getRestaurant", query = "SELECT r from Restaurant r where r.id =:res_id and r.owner.id=:owner_id"),
+    @NamedQuery(name = "updateMealList", query = "UPDATE Restaurant r SET r.mealsList =:mealsList WHERE r.id =:res_id"),
+    // @NamedQuery(name = "")
+})
 public class Restaurant implements Serializable {
 
     @Id
@@ -25,13 +30,12 @@ public class Restaurant implements Serializable {
 
     @NotNull
     private String name;
-    private double lifeTimeEarnings;
     
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.EAGER)
     private Set<Meal> mealsList;
     
     @NotNull
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
     
@@ -46,7 +50,6 @@ public class Restaurant implements Serializable {
     
     public Restaurant(String name){
         this.name = name;
-        this.lifeTimeEarnings = 0;
         this.mealsList = new HashSet<Meal>();
     }
     
@@ -54,7 +57,6 @@ public class Restaurant implements Serializable {
     // Getters
     public int getId() {return id;}
     public String getName() {return name;}
-    public double getLifeTimeEarnings() {return lifeTimeEarnings;}
     public Set<Meal> getMealsList() {return mealsList;}
     public User getOwner() {return owner;}
     
@@ -63,7 +65,6 @@ public class Restaurant implements Serializable {
     public void setId(int id) {this.id = id;}
     public void setOwner(User owner) {this.owner = owner;}
     public void setName(String name) {this.name = name;}
-    public void setLifeTimeEarnings(double lifeTimeEarnings) {this.lifeTimeEarnings = lifeTimeEarnings;}
     
     public void addMeal(Meal meal){mealsList.add(meal);}
     public void removeMeal(Meal meal){mealsList.remove(meal);}
