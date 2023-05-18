@@ -25,6 +25,7 @@ import com.redhat.project.model.Runner;
 import com.redhat.project.model.User;
 import com.redhat.project.model.User.Role;
 import com.redhat.project.services.RestaurantOwnerController;
+import com.redhat.project.util.Wrapper;
 
 
 @Stateless
@@ -135,9 +136,9 @@ public class Apis {
 
     @PUT
     @Path("meal")
-    public boolean updateMeal(Object object){
-        int meal_id = 1;
-        System.out.println();
+    public boolean updateMeal(Wrapper<Integer,Meal> obj){
+        System.out.println(obj.getValue1());
+        System.out.println(obj.getValue2().getName());
         // roc.updateMenuMeal(meal_id, meal);
         return true;
     } 
