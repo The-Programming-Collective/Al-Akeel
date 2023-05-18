@@ -56,8 +56,8 @@ public class Apis {
         order.setRestaurant(res);
         order.setRunner(runner);
         
-        Meal meal = new Meal("koshary",30,res);
-        Meal meal2 = new Meal("Roz-blbn",10,res);
+        Meal meal = new Meal("koshary",30.0,res);
+        Meal meal2 = new Meal("Roz-blbn",10.0,res);
         res.addMeal(meal);
         res.addMeal(meal2);
         order.addItem(meal);
@@ -120,7 +120,10 @@ public class Apis {
 
     @POST
     @Path("meal")
-    public boolean addMenuMeal(Meal meal) throws Exception{
+    public boolean addMenuMeal(Meal meal){
+        System.out.println(meal.getName());
+        System.out.println(meal.getPrice());
+
         roc.addMenuMeal(meal);
         return true;
     }
@@ -137,9 +140,7 @@ public class Apis {
     @PUT
     @Path("meal")
     public boolean updateMeal(Wrapper<Integer,Meal> obj){
-        System.out.println(obj.getValue1());
-        System.out.println(obj.getValue2().getName());
-        // roc.updateMenuMeal(meal_id, meal);
+        roc.updateMenuMeal(obj.getValue1(), obj.getValue2());
         return true;
     } 
 

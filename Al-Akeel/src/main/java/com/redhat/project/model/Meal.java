@@ -16,7 +16,7 @@ public class Meal implements Serializable {
 
     // Default
     public Meal(){}
-    public Meal(String name , double price, Restaurant restaurant){
+    public Meal(String name , Double price, Restaurant restaurant){
         this.name = name ;
         this.price = price;
         this.restaurant = restaurant;
@@ -27,15 +27,9 @@ public class Meal implements Serializable {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
     private String name;
-    private double price;
-    private boolean avaliable;
+    private Double price;
+    private Boolean avaliable;
 
-    public boolean isAvaliable() {
-        return avaliable;
-    }
-    public void setAvaliable(boolean avaliable) {
-        this.avaliable = avaliable;
-    }
 
     // @NotNull
     @ManyToOne
@@ -51,14 +45,16 @@ public class Meal implements Serializable {
     // Getters
     public int getId() {return id;}
     public String getName() {return name;}
-    public double getPrice() {return price;}
+    public Double getPrice() {return price;}
     public int getRestaurant() {return restaurant.getId();}
+    public Boolean isAvaliable() {return avaliable;}
     
     // Setters
     public void setId(int id) {this.id = id;}
     public void setName(String name) {this.name = name;}
-    public void setPrice(double price) {this.price = price;}
+    public void setPrice(Double price) {this.price = price;}
     public void setRestaurant(Restaurant restaurant) {this.restaurant = restaurant;}
+    public void setAvaliable(Boolean avaliable) {this.avaliable = avaliable;}
     
     
 }

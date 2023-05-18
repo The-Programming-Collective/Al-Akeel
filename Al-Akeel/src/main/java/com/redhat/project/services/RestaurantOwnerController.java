@@ -11,13 +11,13 @@ import javax.persistence.TypedQuery;
 import com.redhat.project.model.Meal;
 import com.redhat.project.model.Restaurant;
 
-// ■ Create restaurant menu
+// ■ Create restaurant menu [DONE]
 // ■ Edit restaurant: change menu meals for each restaurant [DONE]
 // ■ Get restaurant details by id [DONE]
 // ■ Create restaurant report: given a restaurant id print
 // how much the restaurant earns (summation of total amount of all completed orders) , Number of completed orders, Number of canceled orders
 
-@Stateless 
+@Stateless
 public class RestaurantOwnerController {
 
     @PersistenceContext(unitName = "persistUnit")
@@ -75,30 +75,26 @@ public class RestaurantOwnerController {
 
 
     public void updateMenuMeal(int meal_id, Meal meal){
-        // Meal oldMeal = entityManager.find(Meal.class,meal_id);
-        
-        System.out.println("============OVERHERE===========");
-        System.out.println(meal.getName());
-        System.out.println("============OVERHEREBITCH===========");
+        Meal oldMeal = entityManager.find(Meal.class, meal_id);
 
-        // oldMeal.setAvaliable(meal.isAvaliable());
-        // oldMeal.setName(meal.getName());
-        // oldMeal.setPrice(meal.getPrice());
-        // entityManager.merge(oldMeal);
+        try{
+            oldMeal.setName(meal.getName());
+        }catch(Exception e){};
+
+        try{
+            oldMeal.setAvaliable(meal.isAvaliable());
+        }catch(Exception e){};
+        
+        try{
+            oldMeal.setPrice(meal.getPrice());
+        }catch(Exception e){};
+        
+        entityManager.merge(oldMeal);
     }
 
 
     public void createReport(){
 
     }
-
-    // {
-    //     "meal_id": 1,
-    //     "Meal": {
-    //         "name": "meal1",
-    //         "price": 10,
-    //         "avaliable": true
-    //     }
-    // }
 
 }
