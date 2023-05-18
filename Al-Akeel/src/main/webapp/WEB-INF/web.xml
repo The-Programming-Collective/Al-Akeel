@@ -5,3 +5,16 @@
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
 </web-app>
+<security-constraint>
+<web-resource-collection>
+     <web-resource-name>All resources</web-resource-name>
+     <url-pattern>/*</url-pattern>
+ </web-resource-collection>
+ <auth-constraint>
+        <role-name>*</role-name>
+ </auth-constraint>
+</security-constraint>
+<login-config>
+    <auth-method>BASIC</auth-method>
+    <realm-name>basicRealm</realm-name>
+</login-config>

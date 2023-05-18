@@ -1,7 +1,6 @@
 package com.redhat.project.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,11 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
-
+//SELECT e from Employee e where e.salary >:sal
 @Entity
+@NamedQuery(name = "getRestaurant", query = "SELECT r from Restaurant r where r.owner.id =:owner_id")
 public class Restaurant implements Serializable {
 
     @Id
@@ -25,16 +26,15 @@ public class Restaurant implements Serializable {
     @NotNull
     private String name;
     private double lifeTimeEarnings;
-
-    @OneToMany(mappedBy = "restaurant",fetch = FetchType.EAGER)
+    
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.EAGER)
     private Set<Meal> mealsList;
-    private ArrayList<Meal> mealsListArray;
-
+    
     @NotNull
     @OneToOne
     @JoinColumn(name = "owner_id")
     private User owner;
-
+    
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.EAGER)
     private Set<Orders> orders;
     
@@ -42,32 +42,30 @@ public class Restaurant implements Serializable {
     public Restaurant(){
         this.orders = new HashSet<Orders>();
         this.mealsList = new HashSet<Meal>();
-        this.mealsListArray = new ArrayList<>(mealsList);
     }
-
+    
     public Restaurant(String name){
         this.name = name;
         this.lifeTimeEarnings = 0;
         this.mealsList = new HashSet<Meal>();
-        this.mealsListArray = new ArrayList<>(mealsList);
     }
     
-
+    
     // Getters
+    public int getId() {return id;}
     public String getName() {return name;}
     public double getLifeTimeEarnings() {return lifeTimeEarnings;}
-    public ArrayList<Meal> getMealsList() {return mealsListArray;}
+    public Set<Meal> getMealsList() {return mealsList;}
     public User getOwner() {return owner;}
     
-
+    
     // Setters
+    public void setId(int id) {this.id = id;}
     public void setOwner(User owner) {this.owner = owner;}
     public void setName(String name) {this.name = name;}
     public void setLifeTimeEarnings(double lifeTimeEarnings) {this.lifeTimeEarnings = lifeTimeEarnings;}
-    // public void setMealsList(HashSet<Meal> mealsList) {this.mealsList = mealsList;}
-    public void setMealsListArray(ArrayList<Meal> mealsList) {this.mealsListArray = mealsList;}
     
-    public void addMeal(Meal meal){mealsListArray.add(meal);}
-    public void removeMeal(Meal meal){mealsListArray.remove(meal);}
+    public void addMeal(Meal meal){mealsList.add(meal);}
+    public void removeMeal(Meal meal){mealsList.remove(meal);}
     
 }

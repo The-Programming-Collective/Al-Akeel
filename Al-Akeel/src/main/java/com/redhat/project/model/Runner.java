@@ -11,7 +11,6 @@ enum Status{AVAILABLE, BUSY}
 @Entity
 public class Runner extends User{
     
-    
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;

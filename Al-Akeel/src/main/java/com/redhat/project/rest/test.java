@@ -3,6 +3,7 @@ package com.redhat.project.rest;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -18,6 +19,7 @@ import com.redhat.project.model.Restaurant;
 import com.redhat.project.model.Runner;
 import com.redhat.project.model.User;
 import com.redhat.project.model.User.Role;
+import com.redhat.project.services.RestaurantOwnerController;
 
 
 
@@ -28,6 +30,8 @@ import com.redhat.project.model.User.Role;
 public class test {
     @PersistenceContext(unitName = "persistUnit")
     private EntityManager entityManager;
+    @Inject
+    private RestaurantOwnerController roc;
 
 
     @POST
@@ -50,14 +54,20 @@ public class test {
         order.setRunner(runner);
 
 
-        Meal meal = new Meal("koshary",4.5);
         
+        Meal meal = new Meal("koshary",4.5);
+        Meal meal2 = new Meal("d7k",7.5);
         res.addMeal(meal);
+        res.addMeal(meal2);
+        meal.setRestaurant(res);
+        meal2.setRestaurant(res);
         order.addItem(meal);
+        order.addItem(meal2);
 
         // res.getMealsList().iterator().next().getName();
         
         entityManager.persist(meal);
+        entityManager.persist(meal2);
         entityManager.persist(runner);
         entityManager.persist(owner);
         entityManager.persist(order);
@@ -98,6 +108,12 @@ public class test {
         .createQuery("select o from Meal o", Meal.class);
         return query.getResultList();
     }
-    
 
+    @GET
+    @Path("restaurants")
+    public Object getRestaurant() throws Exception{
+        List<Restaurant> res =  roc.getRestaurant(1);
+        return res;
+    }
+    
 }
