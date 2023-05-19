@@ -5,13 +5,6 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.jboss</groupId>
-    <artifactId>jboss-parent</artifactId>
-    <version>23.0.0.redhat-1</version>
-    <relativePath />
-  </parent>
-
   <groupId>com.redhat.project</groupId>
   <artifactId>Al-Akeel</artifactId>
   <version>1.0</version>
@@ -19,7 +12,7 @@
 
   <properties>
     <root.dir>${project.basedir}</root.dir>
-    <version.wildfly.maven.plugin>1.2.0.Beta1</version.wildfly.maven.plugin>
+    <version.wildfly.maven.plugin>3.0.0.Final</version.wildfly.maven.plugin>
 
     <version.com.mycyla.license>3.0</version.com.mycyla.license>
 
@@ -47,6 +40,7 @@
         <artifactId>h2</artifactId>
         <version>${version.h2db}</version>
       </dependency>
+      
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
@@ -93,12 +87,6 @@
   <dependencies>
 
     <dependency>
-      <groupId>org.xerial</groupId>
-      <artifactId>sqlite-jdbc</artifactId>
-      <version>3.41.2.1</version>
-    </dependency>
-
-    <dependency>
       <groupId>javax.inject</groupId>
       <artifactId>javax.inject</artifactId>
       <scope>provided</scope>
@@ -133,10 +121,23 @@
     </dependency>
 
     <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>2.0.1.Final</version>
+    </dependency>
+
+  <dependency>
+	  <groupId>org.hibernate</groupId>
+	  <artifactId>hibernate-entitymanager</artifactId>
+	  <scope>provided</scope>
+  </dependency>
+
+    <dependency>
       <groupId>org.jboss.spec.javax.ejb</groupId>
       <artifactId>jboss-ejb-api_3.2_spec</artifactId>
       <scope>provided</scope>
     </dependency>
+
 
     <dependency>
       <groupId>org.jboss.spec.javax.ws.rs</groupId>
@@ -210,12 +211,6 @@
 
   <build>
     <finalName>${project.artifactId}</finalName>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-      </plugin>
-    </plugins>
     <pluginManagement>
       <plugins>
         <plugin>
