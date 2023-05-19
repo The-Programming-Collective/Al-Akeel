@@ -31,6 +31,7 @@ import com.redhat.project.model.User.Role;
 import com.redhat.project.services.CustomerController;
 import com.redhat.project.services.RestaurantOwnerController;
 import com.redhat.project.services.RunnerController;
+import com.redhat.project.util.CustomException;
 import com.redhat.project.util.Wrapper;
 
 
@@ -54,7 +55,10 @@ public class Apis {
     @PostConstruct
     private void init(){
         Runner runner = new Runner();
+        Runner runner2 = new Runner();
         runner.setName("ahmed");
+        runner2.setName("yousef");
+
         runner.setRunnerStatus(RunnerStatus.BUSY);
         
         User owner = new User();
@@ -68,6 +72,7 @@ public class Apis {
         order.setName("Order1");
         order.setRestaurant(res);
         order.setRunner(runner);
+        runner.addAssignedOrder(order);
         order.setOrderStatus(OrderStatus.DELIVERING);
         
         Meal meal = new Meal("koshary",30.0,res);
@@ -84,6 +89,7 @@ public class Apis {
         entityManager.persist(meal);
         entityManager.persist(meal2);
         entityManager.persist(runner);
+        entityManager.persist(runner2);
         entityManager.persist(order);
     }
 
@@ -192,8 +198,8 @@ public class Apis {
 
     @GET
     @Path("completedOrders")
-    public Map<String,Long> getCompletedOrders(){
-        Map<String,Long> map = new HashMap<>();
+    public Map<String,Integer> getCompletedOrders(){
+        Map<String,Integer> map = new HashMap<>();
         map.put("completedOrders", runnerController.getCompletedOrdersCount());
         return map;
     } 
@@ -204,6 +210,17 @@ public class Apis {
     public Boolean completeOrder(){
         runnerController.completeOrder();
         return true;
+    }
+
+    
+    @POST
+    @Path("order")
+    public Object createOrder(Wrapper<Integer,Set<Integer>> orderWrapper){
+        try{
+            return customerController.createOrder(orderWrapper.value1, orderWrapper.value2);
+        }catch(Exception e){
+            return false;
+        }
     }
     
     

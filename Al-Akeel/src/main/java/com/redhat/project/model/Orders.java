@@ -1,6 +1,11 @@
 package com.redhat.project.model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,12 +20,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @NamedQueries({
     @NamedQuery(name = "getOrders" , query = "SELECT r from Orders r where r.restaurant.id = :restaurant_id"),
-    @NamedQuery(name = "getOrdersCount", query = "SELECT COUNT(o) from Orders o where o.runner = :runner AND o.orderStatus = :status")
 })
 public class Orders implements Serializable{
     public enum OrderStatus{PREPARING, DELIVERING, CANCELED, COMPLETED}
@@ -30,29 +35,34 @@ public class Orders implements Serializable{
     private int id;
     private String name;
     private OrderStatus orderStatus;
-
+    private String date;    
+    
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "MealXOrder",
         joinColumns = @JoinColumn(name="order_id"),
         inverseJoinColumns = @JoinColumn(name ="meal_id")
-    )
+        )
     private Set<Meal> itemsList;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "runner_id")
     private Runner runner;
 
     public Orders(){
         this.itemsList = new HashSet<Meal>();
         this.orderStatus = OrderStatus.PREPARING;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date dateTimeStamp = new Date();
+        this.date = formatter.format(dateTimeStamp);
     }
 
     // Getters
+    public int getId() {return id;}
     public Runner getRunner() {return runner;}
     public int getRestaurant() {return restaurant.getId();}
     public Set<Meal> getItemsList() {return itemsList;}
@@ -65,6 +75,7 @@ public class Orders implements Serializable{
     }
     public OrderStatus getOrderStatus() {return orderStatus;}
     public String getName() {return name;}
+    public String getDate() {return date;}
 
     // Setters
     public void setRunner(Runner runner) {this.runner = runner;}

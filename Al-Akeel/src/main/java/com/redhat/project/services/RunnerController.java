@@ -2,6 +2,7 @@ package com.redhat.project.services;
 
 
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -19,7 +20,7 @@ import com.redhat.project.model.Runner.RunnerStatus;
 // Note: when creating runner account let user enter delivery fees per order , this value will be
 // reused when calculating the total order value.
 
-
+//TODO add change fees functionality 
 @Stateless 
 public class RunnerController {
     
@@ -51,12 +52,14 @@ public class RunnerController {
     }
 
     
-    public Long getCompletedOrdersCount(){
-        TypedQuery<Long> query = entityManager
-        .createNamedQuery("getOrdersCount",Long.class);
-        query.setParameter("runner", this.runner);
-        query.setParameter("status", Orders.OrderStatus.COMPLETED);
-        return query.getSingleResult();
+    public int getCompletedOrdersCount(){
+        Set<Orders> orders = this.runner.returnAssignedOrders();
+        int counter = 0 ;
+        for(Orders order : orders){
+            if(order.getOrderStatus()==OrderStatus.COMPLETED)
+                counter++;
+        }
+        return counter;
     }
 
 }
