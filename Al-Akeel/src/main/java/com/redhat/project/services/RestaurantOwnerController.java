@@ -1,6 +1,8 @@
 package com.redhat.project.services;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.ejb.Stateless;
@@ -9,12 +11,14 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import com.redhat.project.model.Meal;
+import com.redhat.project.model.Orders;
+import com.redhat.project.model.Orders.OrderStatus;
 import com.redhat.project.model.Restaurant;
 
 // ■ Create restaurant menu [DONE]
 // ■ Edit restaurant: change menu meals for each restaurant [DONE]
 // ■ Get restaurant details by id [DONE]
-// ■ Create restaurant report: given a restaurant id print
+// ■ Create restaurant report: given a restaurant id print [DONE]
 // how much the restaurant earns (summation of total amount of all completed orders) , Number of completed orders, Number of canceled orders
 
 @Stateless
@@ -45,12 +49,11 @@ public class RestaurantOwnerController {
         Set<Meal> oldMenu =  restaurant.getMealsList();
 
         for(Meal item: oldMenu){
-            System.out.println(item.getName());
             item.setAvaliable(false);
             entityManager.merge(item);
         }
 
-        for (Meal item : menu) {
+        for (Meal item : menu){
             item.setRestaurant(restaurant);
             item.setAvaliable(true);
             entityManager.persist(item);
@@ -77,24 +80,44 @@ public class RestaurantOwnerController {
     public void updateMenuMeal(int meal_id, Meal meal){
         Meal oldMeal = entityManager.find(Meal.class, meal_id);
 
-        try{
-            oldMeal.setName(meal.getName());
-        }catch(Exception e){};
-
-        try{
-            oldMeal.setAvaliable(meal.isAvaliable());
-        }catch(Exception e){};
-        
-        try{
-            oldMeal.setPrice(meal.getPrice());
-        }catch(Exception e){};
+        oldMeal.setName(meal.getName());
+        oldMeal.setAvaliable(meal.isAvaliable());
+        oldMeal.setPrice(meal.getPrice());
         
         entityManager.merge(oldMeal);
     }
 
 
-    public void createReport(){
+    public Map<String,Double> createReport(){
+        TypedQuery<Orders> query = entityManager
+        .createNamedQuery("getOrders", Orders.class);
+        query.setParameter("restaurant_id", this.restaurant.getId());
+        
+        List<Orders> orders = query.getResultList();
 
+        System.out.println(orders.size());
+
+        int canceled = 0;
+        int completed = 0;
+        Double earnings = 0.0;
+        for(Orders order : orders){
+            OrderStatus orderStatus = order.getOrderStatus();
+            if(orderStatus==OrderStatus.CANCELED)
+                canceled++;
+            else if(orderStatus==OrderStatus.COMPLETED){
+                earnings+=order.getTotalPrice();
+                completed++;
+            }
+            System.out.println(order.getName());
+        }
+
+        Map<String,Double> map = new HashMap<String,Double>();
+
+        map.put("completedOrders", Double.valueOf(completed));
+        map.put("canceledOrders", Double.valueOf(canceled));
+        map.put("earnings", earnings);
+        
+        return map;
     }
 
 }

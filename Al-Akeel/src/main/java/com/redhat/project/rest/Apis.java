@@ -20,6 +20,7 @@ import javax.ws.rs.QueryParam;
 
 import com.redhat.project.model.Meal;
 import com.redhat.project.model.Orders;
+import com.redhat.project.model.Orders.OrderStatus;
 import com.redhat.project.model.Restaurant;
 import com.redhat.project.model.Runner;
 import com.redhat.project.model.User;
@@ -55,6 +56,7 @@ public class Apis {
         order.setName("Order1");
         order.setRestaurant(res);
         order.setRunner(runner);
+        order.setOrderStatus(OrderStatus.COMPLETED);
         
         Meal meal = new Meal("koshary",30.0,res);
         Meal meal2 = new Meal("Roz-blbn",10.0,res);
@@ -73,18 +75,17 @@ public class Apis {
         entityManager.persist(order);
     }
 
-
     @GET
-    @Path("")
+    @Path("runners")
     public List<User> getRunnersList(){
         TypedQuery<User> query = entityManager
-        .createQuery("select r from User r", User.class);
+        .createQuery("select r from User r where role = project.model.User.Role.RUNNER", User.class);
         return query.getResultList();
     }
 
 
     @GET
-    @Path("order")
+    @Path("orders")
     public List<Orders> getOrdersList(){
         TypedQuery<Orders> query = entityManager
         .createQuery("select o from Orders o", Orders.class);
@@ -93,7 +94,7 @@ public class Apis {
 
 
     @GET
-    @Path("res")
+    @Path("restaurants")
     public List<Restaurant> getRestaurantsList(){
         TypedQuery<Restaurant> query = entityManager
         .createQuery("select o from Restaurant o", Restaurant.class);
@@ -102,7 +103,7 @@ public class Apis {
 
 
     @GET
-    @Path("meal")
+    @Path("meals")
     public List<Meal> getMealsList(){
         TypedQuery<Meal> query = entityManager
         .createQuery("select o from Meal o", Meal.class);
@@ -111,7 +112,7 @@ public class Apis {
 
 
     @GET
-    @Path("restaurants")
+    @Path("restaurant")
     public Object getRestaurant(@QueryParam("restaurant_id") int restaurant_id, @QueryParam("owner_id") int owner_id) throws Exception{
         List<Restaurant> res =  roc.getRestaurant(restaurant_id,owner_id);
         return res;
@@ -140,7 +141,7 @@ public class Apis {
     @PUT
     @Path("meal")
     public boolean updateMeal(Wrapper<Integer,Meal> obj){
-        roc.updateMenuMeal(obj.getValue1(), obj.getValue2());
+        roc.updateMenuMeal(obj.value1, obj.value2);
         return true;
     } 
 
@@ -152,5 +153,10 @@ public class Apis {
         return true;
     }
 
+    @GET
+    @Path("report")
+    public Object getReport(){
+        return roc.createReport();
+    }
     
 }

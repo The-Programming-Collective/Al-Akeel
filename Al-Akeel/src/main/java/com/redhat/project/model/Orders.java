@@ -13,17 +13,21 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "getOrders" , query = "SELECT r from Orders r where r.restaurant.id = :restaurant_id"),
+})
 public class Orders implements Serializable{
-    public enum OrderStatus{PREPARING, DELIVERED, CANCELED}
+    public enum OrderStatus{PREPARING, DELIVERING, CANCELED, COMPLETED}
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    private double totalPrice;
     private OrderStatus orderStatus;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -51,7 +55,13 @@ public class Orders implements Serializable{
     public Runner getRunner() {return runner;}
     public int getRestaurant() {return restaurant.getId();}
     public Set<Meal> getItemsList() {return itemsList;}
-    public double getTotalPrice() {return totalPrice;}
+    public double getTotalPrice() {
+        double totalPrice =  0;
+        for(Meal meal : itemsList){
+            totalPrice+= meal.getPrice();
+        }
+        return totalPrice;
+    }
     public OrderStatus getOrderStatus() {return orderStatus;}
     public String getName() {return name;}
 
@@ -59,7 +69,6 @@ public class Orders implements Serializable{
     public void setRunner(Runner runner) {this.runner = runner;}
     public void setRestaurant(Restaurant restaurant) {this.restaurant = restaurant;}
     public void setItemsList(HashSet<Meal> itemsList) {this.itemsList = itemsList;}
-    public void setTotalPrice(double totalPrice) {this.totalPrice = totalPrice;}
     public void setOrderStatus(OrderStatus orderStatus) {this.orderStatus = orderStatus;}
     public void setName(String name) {this.name = name;}
 
