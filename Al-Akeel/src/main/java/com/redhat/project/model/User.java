@@ -11,8 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 
-
-
 @Entity
 public class User implements Serializable {
     public enum Role{CUSTOMER, RESTUARANT_OWNER, RUNNER}
@@ -23,6 +21,7 @@ public class User implements Serializable {
     private String name;
     private Role role;
 
+    
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     private Set<Restaurant> restaurant;
 

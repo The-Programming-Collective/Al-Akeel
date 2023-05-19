@@ -35,7 +35,7 @@ public class RestaurantOwnerController {
 
         List<Restaurant> res = q.getResultList();
 
-        if(res.size()!=0){restaurant=res.get(0);}
+        if(res.size()!=0){this.restaurant=res.get(0);}
         
         return res;
     }

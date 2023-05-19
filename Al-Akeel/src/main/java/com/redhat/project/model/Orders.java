@@ -20,6 +20,7 @@ import javax.persistence.OneToOne;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "getOrders" , query = "SELECT r from Orders r where r.restaurant.id = :restaurant_id"),
+    @NamedQuery(name = "getOrdersCount", query = "SELECT COUNT(o) from Orders o where o.runner = :runner AND o.orderStatus = :status")
 })
 public class Orders implements Serializable{
     public enum OrderStatus{PREPARING, DELIVERING, CANCELED, COMPLETED}

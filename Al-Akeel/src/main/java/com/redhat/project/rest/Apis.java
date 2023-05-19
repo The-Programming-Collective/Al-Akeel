@@ -1,6 +1,8 @@
 package com.redhat.project.rest;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -21,11 +23,14 @@ import javax.ws.rs.QueryParam;
 import com.redhat.project.model.Meal;
 import com.redhat.project.model.Orders;
 import com.redhat.project.model.Orders.OrderStatus;
+import com.redhat.project.model.Runner.RunnerStatus;
 import com.redhat.project.model.Restaurant;
 import com.redhat.project.model.Runner;
 import com.redhat.project.model.User;
 import com.redhat.project.model.User.Role;
+import com.redhat.project.services.CustomerController;
 import com.redhat.project.services.RestaurantOwnerController;
+import com.redhat.project.services.RunnerController;
 import com.redhat.project.util.Wrapper;
 
 
@@ -38,12 +43,19 @@ public class Apis {
     private EntityManager entityManager;
 
     @Inject
-    private RestaurantOwnerController roc;
+    private RestaurantOwnerController restaurantOwnerController;
+
+    @Inject
+    private RunnerController runnerController;
+
+    @Inject
+    private CustomerController customerController;
     
     @PostConstruct
     private void init(){
         Runner runner = new Runner();
         runner.setName("ahmed");
+        runner.setRunnerStatus(RunnerStatus.BUSY);
         
         User owner = new User();
         owner.setName("ali");
@@ -56,7 +68,7 @@ public class Apis {
         order.setName("Order1");
         order.setRestaurant(res);
         order.setRunner(runner);
-        order.setOrderStatus(OrderStatus.COMPLETED);
+        order.setOrderStatus(OrderStatus.DELIVERING);
         
         Meal meal = new Meal("koshary",30.0,res);
         Meal meal2 = new Meal("Roz-blbn",10.0,res);
@@ -73,14 +85,6 @@ public class Apis {
         entityManager.persist(meal2);
         entityManager.persist(runner);
         entityManager.persist(order);
-    }
-
-    @GET
-    @Path("runners")
-    public List<User> getRunnersList(){
-        TypedQuery<User> query = entityManager
-        .createQuery("select r from User r where role = project.model.User.Role.RUNNER", User.class);
-        return query.getResultList();
     }
 
 
@@ -114,7 +118,7 @@ public class Apis {
     @GET
     @Path("restaurant")
     public Object getRestaurant(@QueryParam("restaurant_id") int restaurant_id, @QueryParam("owner_id") int owner_id) throws Exception{
-        List<Restaurant> res =  roc.getRestaurant(restaurant_id,owner_id);
+        List<Restaurant> res =  restaurantOwnerController.getRestaurant(restaurant_id,owner_id);
         return res;
     }
 
@@ -125,7 +129,7 @@ public class Apis {
         System.out.println(meal.getName());
         System.out.println(meal.getPrice());
 
-        roc.addMenuMeal(meal);
+        restaurantOwnerController.addMenuMeal(meal);
         return true;
     }
 
@@ -133,7 +137,7 @@ public class Apis {
     @DELETE
     @Path("meal")
     public boolean removeMenuMeal(@QueryParam("meal_id") int meal_id){
-        roc.removeMenuMeal(meal_id);
+        restaurantOwnerController.removeMenuMeal(meal_id);
         return true;
     }
 
@@ -141,7 +145,7 @@ public class Apis {
     @PUT
     @Path("meal")
     public boolean updateMeal(Wrapper<Integer,Meal> obj){
-        roc.updateMenuMeal(obj.value1, obj.value2);
+        restaurantOwnerController.updateMenuMeal(obj.value1, obj.value2);
         return true;
     } 
 
@@ -149,14 +153,58 @@ public class Apis {
     @POST
     @Path("menu")
     public boolean createMenu(Set<Meal> mealsList){
-        roc.setMenu(mealsList);
+        restaurantOwnerController.setMenu(mealsList);
         return true;
     }
+
 
     @GET
     @Path("report")
     public Object getReport(){
-        return roc.createReport();
+        return restaurantOwnerController.createReport();
     }
+    
+
+    @GET
+    @Path("runners")
+    public List<Runner> getRunnersList(){
+        TypedQuery<Runner> query = entityManager
+        .createQuery("select r from Runner r ", Runner.class);
+        return query.getResultList();
+    }
+
+
+    @GET
+    @Path("users")
+    public List<User> getAllUsersList(){
+        TypedQuery<User> query = entityManager
+        .createQuery("select r from User r", User.class);
+        return query.getResultList();
+    }
+    
+
+    @GET
+    @Path("runner")
+    public Runner getRunner(@QueryParam("runner_id") int runner_id){
+        return runnerController.getRunner(runner_id);
+    }
+
+
+    @GET
+    @Path("completedOrders")
+    public Map<String,Long> getCompletedOrders(){
+        Map<String,Long> map = new HashMap<>();
+        map.put("completedOrders", runnerController.getCompletedOrdersCount());
+        return map;
+    } 
+
+
+    @PUT
+    @Path("completeOrder")
+    public Boolean completeOrder(){
+        runnerController.completeOrder();
+        return true;
+    }
+    
     
 }

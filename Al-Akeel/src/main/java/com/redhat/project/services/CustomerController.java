@@ -22,4 +22,10 @@ public class CustomerController {
     @PersistenceContext(unitName = "persistUnit")
     private EntityManager entityManager;
 
+
+
+    public void createOrder(){
+
+    }
+
 }
