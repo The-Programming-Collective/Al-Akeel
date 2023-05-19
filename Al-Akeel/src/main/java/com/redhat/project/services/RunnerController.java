@@ -20,7 +20,14 @@ import com.redhat.project.model.Runner.RunnerStatus;
 // Note: when creating runner account let user enter delivery fees per order , this value will be
 // reused when calculating the total order value.
 
-//TODO add change fees functionality 
+// Entities:
+// User: Id ,name, role
+// Meal: id, name , price, fk_restaurantId
+// Order: Id, Item array, total_price, fk_runnerId, fk_restaurantId, order_status(preparing, delivered,
+// canceled )
+// Runner: Id, name, status(available, busy),delivery_fees
+// Restaurant: Id, name, ownerId, list of meals
+
 @Stateless 
 public class RunnerController {
     
@@ -40,11 +47,11 @@ public class RunnerController {
 
     
     public void completeOrder(){
-        if (this.runner.returnAssignedOrder().getOrderStatus().equals(OrderStatus.DELIVERING) 
-            && this.runner.getRunnerStatus().equals(RunnerStatus.BUSY)){
-
+        if (this.runner.getRunnerStatus().equals(RunnerStatus.BUSY)){
             this.runner.setRunnerStatus(RunnerStatus.AVAILABLE);
-            this.runner.returnAssignedOrder().setOrderStatus(OrderStatus.COMPLETED);
+            this.runner.returnAssignedOrder().setOrderStatus(OrderStatus.DELIVERED);
+            
+
 
             entityManager.merge(this.runner.returnAssignedOrder());
             entityManager.merge(this.runner);
@@ -56,10 +63,24 @@ public class RunnerController {
         Set<Orders> orders = this.runner.returnAssignedOrders();
         int counter = 0 ;
         for(Orders order : orders){
-            if(order.getOrderStatus()==OrderStatus.COMPLETED)
+            if(order.getOrderStatus()==OrderStatus.DELIVERED)
                 counter++;
         }
         return counter;
+    }
+
+
+    public boolean changeFees(Double newFees){
+        try{
+            if(runner.getRunnerStatus().equals(RunnerStatus.BUSY))
+                throw new IllegalAccessError();
+                
+            runner.setDeliveryFees(newFees);
+            entityManager.merge(runner);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
     }
 
 }

@@ -28,14 +28,13 @@ public class Runner extends User{
     public Runner(){
         this.setRole(Role.RUNNER);
         this.runnerStatus = RunnerStatus.AVAILABLE;
-        this.orders = new LinkedHashSet<>();
     }
     
     private double deliveryFees;
     private RunnerStatus runnerStatus;
 
     @OneToMany(mappedBy = "runner",fetch = FetchType.EAGER)
-    private Set<Orders> orders;
+    private Set<Orders> orders = new LinkedHashSet<>();
 
     // Getters
     public int getId(){return this.id;}

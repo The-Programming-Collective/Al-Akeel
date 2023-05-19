@@ -1,11 +1,8 @@
 package com.redhat.project.model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,22 +17,21 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @NamedQueries({
     @NamedQuery(name = "getOrders" , query = "SELECT r from Orders r where r.restaurant.id = :restaurant_id"),
 })
 public class Orders implements Serializable{
-    public enum OrderStatus{PREPARING, DELIVERING, CANCELED, COMPLETED}
+    public enum OrderStatus{PREPARING, DELIVERED, CANCELED}
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private OrderStatus orderStatus;
-    private String date;    
+    private String date;   
+    private Double totalPrice=0.0; 
     
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -66,13 +62,18 @@ public class Orders implements Serializable{
     public Runner getRunner() {return runner;}
     public int getRestaurant() {return restaurant.getId();}
     public Set<Meal> getItemsList() {return itemsList;}
+
     public double getTotalPrice() {
-        double totalPrice =  0;
-        for(Meal meal : itemsList){
-            totalPrice+= meal.getPrice();
+        if(orderStatus != OrderStatus.DELIVERED){
+            totalPrice =  0.0;
+            for(Meal meal : itemsList){
+                totalPrice+= meal.getPrice();
+            }
+            totalPrice+=runner.getDeliveryFees();
         }
         return totalPrice;
     }
+    
     public OrderStatus getOrderStatus() {return orderStatus;}
     public String getName() {return name;}
     public String getDate() {return date;}
@@ -83,6 +84,7 @@ public class Orders implements Serializable{
     public void setItemsList(HashSet<Meal> itemsList) {this.itemsList = itemsList;}
     public void setOrderStatus(OrderStatus orderStatus) {this.orderStatus = orderStatus;}
     public void setName(String name) {this.name = name;}
+    public void setTotalPrice(Double totalPrice) { this.totalPrice = totalPrice;}
 
     public void addItem(Meal meal){itemsList.add(meal);}
     public void removeItem(Meal meal){itemsList.remove(meal);}

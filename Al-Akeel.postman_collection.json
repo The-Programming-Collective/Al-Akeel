@@ -371,6 +371,93 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Make Order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"value1\":\"1\",\n    \"value2\":[1,2]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/Al-Akeel/api/order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Al-Akeel",
+						"api",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change Runner Fees",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/Al-Akeel/api/fees?new_fees=6.9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Al-Akeel",
+						"api",
+						"fees"
+					],
+					"query": [
+						{
+							"key": "new_fees",
+							"value": "6.9"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Order",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"value1\":\"2\",\n    \"value2\":[2]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/Al-Akeel/api/order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Al-Akeel",
+						"api",
+						"order"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

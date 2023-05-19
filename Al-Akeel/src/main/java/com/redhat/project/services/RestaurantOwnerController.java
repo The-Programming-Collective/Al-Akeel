@@ -105,7 +105,7 @@ public class RestaurantOwnerController {
             OrderStatus orderStatus = order.getOrderStatus();
             if(orderStatus==OrderStatus.CANCELED)
                 canceled++;
-            else if(orderStatus==OrderStatus.COMPLETED){
+            else if(orderStatus==OrderStatus.DELIVERED){
                 earnings+=order.getTotalPrice();
                 completed++;
             }

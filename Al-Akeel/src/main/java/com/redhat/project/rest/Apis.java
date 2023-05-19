@@ -31,7 +31,6 @@ import com.redhat.project.model.User.Role;
 import com.redhat.project.services.CustomerController;
 import com.redhat.project.services.RestaurantOwnerController;
 import com.redhat.project.services.RunnerController;
-import com.redhat.project.util.CustomException;
 import com.redhat.project.util.Wrapper;
 
 
@@ -58,8 +57,9 @@ public class Apis {
         Runner runner2 = new Runner();
         runner.setName("ahmed");
         runner2.setName("yousef");
+        runner2.setDeliveryFees(10);
 
-        runner.setRunnerStatus(RunnerStatus.BUSY);
+        runner.setRunnerStatus(RunnerStatus.AVAILABLE);
         
         User owner = new User();
         owner.setName("ali");
@@ -73,7 +73,7 @@ public class Apis {
         order.setRestaurant(res);
         order.setRunner(runner);
         runner.addAssignedOrder(order);
-        order.setOrderStatus(OrderStatus.DELIVERING);
+        order.setOrderStatus(OrderStatus.DELIVERED);
         
         Meal meal = new Meal("koshary",30.0,res);
         Meal meal2 = new Meal("Roz-blbn",10.0,res);
@@ -195,6 +195,13 @@ public class Apis {
         return runnerController.getRunner(runner_id);
     }
 
+    
+    @PUT
+    @Path("fees")
+    public Boolean changeRunnerFees(@QueryParam("new_fees") Double new_fees){
+        return runnerController.changeFees(new_fees);
+    }
+
 
     @GET
     @Path("completedOrders")
@@ -222,6 +229,14 @@ public class Apis {
             return false;
         }
     }
+
+    
+    @PUT
+    @Path("order")
+    public boolean editOrder(Wrapper<Integer,Set<Integer>> orderWrapper){
+        return customerController.editOrder(orderWrapper.value1, orderWrapper.value2);
+    }
+
     
     
 }

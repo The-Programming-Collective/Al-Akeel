@@ -1,5 +1,6 @@
 package com.redhat.project.services;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.ejb.Stateless;
@@ -24,7 +25,8 @@ import com.redhat.project.model.Runner;
 // an order and convert his status to busy
 // Edit order [change an order’s items] make sure an order is not canceled and it is
 // in the preparing state to be edited
-// List all restaurants
+//  List all restaurants
+
 
 @Stateless 
 public class CustomerController {
@@ -35,32 +37,57 @@ public class CustomerController {
 
     private User customer;
 
-    //date[done] , restaurant name[done], items list , delivery fees, runner name, total receipt value (summation of items prices , delivery fees )
+    // used in both create order and edit order
+    public boolean setItemsList(Orders order,Set<Integer> meals_ids){
+        try{
+            Restaurant restaurant = entityManager.find(Restaurant.class,order.getRestaurant());
+            Set<Meal> meals = restaurant.getMealsList();
+            order.setItemsList(new HashSet<Meal>());
+            for(Integer meal_id : meals_ids){
+                Meal meal = entityManager.find(Meal.class,meal_id);
+                if(meals.contains(meal))
+                    order.addItem(meal);
+            }
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+        
+    }
+
     public Orders createOrder(int restaurant_id,Set<Integer> meals_ids){
         Orders order = new Orders();
         order.setName(/*customer.getName() +*/ "'s Order");
         Restaurant restaurant = entityManager.find(Restaurant.class,restaurant_id);
         order.setRestaurant(restaurant);
 
-        Set<Meal> meals = restaurant.getMealsList();
-        for(Integer meal_id : meals_ids){
-            Meal meal = entityManager.find(Meal.class,meal_id);
-            if(meals.contains(meal))
-                order.addItem(meal);
-        }
+        setItemsList(order, meals_ids);
 
-        //set first available runner to order
+        // Set first available runner to order
         TypedQuery<Runner> query = entityManager.createNamedQuery("getRunnerOnStatus", Runner.class);
         query.setParameter("runner_status", RunnerStatus.AVAILABLE);
         query.setMaxResults(1);
         Runner runner = query.getSingleResult();
         runner.setRunnerStatus(RunnerStatus.BUSY);
         order.setRunner(runner);
-
-        entityManager.merge(runner);
+        runner.addAssignedOrder(order);
         entityManager.persist(order);
+        entityManager.merge(runner);
 
         return order;
     }
+
+
+    public boolean editOrder(int order_id,Set<Integer> meals_ids){
+        Orders order = entityManager.find(Orders.class,order_id);
+        if(order.getOrderStatus() == Orders.OrderStatus.PREPARING)
+        {
+            setItemsList(order, meals_ids);
+            entityManager.merge(order);
+            return true;
+        }
+        else{return false;}
+    }
+
 
 }
