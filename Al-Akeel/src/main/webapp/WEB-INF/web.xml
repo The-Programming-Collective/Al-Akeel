@@ -31,7 +31,8 @@
                 <http-method>OPTIONS</http-method>    
                 <http-method>TRACE</http-method>     
                 <http-method>GET</http-method>     
-                <http-method>POST</http-method>   
+                <http-method>POST</http-method>
+                <http-method>CONNECT</http-method>
         </web-resource-collection>   
         <user-data-constraint>     
         <transport-guarantee>NONE</transport-guarantee>   

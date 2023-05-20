@@ -1,21 +1,16 @@
 package com.redhat.project.rest;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.security.Security;
+import java.io.FileWriter;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.security.auth.Subject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -69,6 +64,11 @@ public class Apis {
         if(inited)
             return false;
         try{
+            // Resets server users data
+            new FileWriter("../domain/configuration/application-users.properties", false).close();
+            new FileWriter("../standalone/configuration/application-users.properties", false).close();
+
+
             Runner runner = new Runner("test", "youssef");
             Runner runner2 = new Runner("fares", "test");
             runner.setDeliveryFees(69);
@@ -246,13 +246,13 @@ public class Apis {
     }
 
 
-    // @GET
-    // @Path("users")
-    // public List<User> getAllUsersList(){
-    //    TypedQuery<User> query = entityManager
-    //    .createQuery("select r from User r", User.class);
-    //    return query.getResultList();
-    // }
+    @GET
+    @Path("users")
+    public List<User> getAllUsersList(){
+       TypedQuery<User> query = entityManager
+       .createQuery("select r from User r", User.class);
+       return query.getResultList();
+    }
     
 
 }
