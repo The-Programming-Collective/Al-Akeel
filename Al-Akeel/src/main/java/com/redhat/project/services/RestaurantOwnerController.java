@@ -14,6 +14,7 @@ import com.redhat.project.model.Meal;
 import com.redhat.project.model.Orders;
 import com.redhat.project.model.Orders.OrderStatus;
 import com.redhat.project.model.Restaurant;
+import com.redhat.project.model.User;
 
 // ■ Create restaurant menu [DONE]
 // ■ Edit restaurant: change menu meals for each restaurant [DONE]
@@ -26,14 +27,21 @@ public class RestaurantOwnerController {
 
     @PersistenceContext(unitName = "persistUnit")
     private EntityManager entityManager;
+
     private Restaurant restaurant;
 
+    private User owner;
 
-    public Restaurant getRestaurant(int restaurant_id, int owner_id) throws Exception{
+    public boolean setOwner(User owner){
+        this.owner = owner;
+        return true;
+    }
+
+    public Restaurant getRestaurant(int restaurant_id) throws Exception{
         try{
             TypedQuery<Restaurant> q = entityManager.createNamedQuery("getRestaurant",Restaurant.class);
             q.setParameter("res_id", restaurant_id);
-            q.setParameter("owner_id", owner_id);
+            q.setParameter("owner_id", owner.getId());
 
             List<Restaurant> res = q.getResultList();
 

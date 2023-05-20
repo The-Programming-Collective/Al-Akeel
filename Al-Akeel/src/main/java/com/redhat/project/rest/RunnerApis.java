@@ -13,7 +13,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import com.redhat.project.model.Runner;
-import com.redhat.project.model.User;
 import com.redhat.project.services.RunnerController;
 import com.redhat.project.util.Authenticator;
 
@@ -44,8 +43,7 @@ public class RunnerApis {
     @GET
     @Path("runner")
     public Runner getRunner(){
-        User runner = authenticator.authenticate();
-        return runnerController.getRunner(runner.getId());
+        return runnerController.getRunner();
     }
 
 

@@ -1,13 +1,11 @@
 package com.redhat.project.services;
 
 
-import java.util.List;
 import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 import com.redhat.project.model.Orders.OrderStatus;
 import com.redhat.project.model.Orders;
@@ -35,17 +33,22 @@ public class RunnerController {
     private EntityManager entityManager;
     private Runner runner;
 
+    public boolean setRunner(Runner runner){
+        this.runner = runner;
+        return true;
+    }
 
-    public Runner getRunner(int runner_id){
-        TypedQuery<Runner> query = entityManager.createNamedQuery("getRunner", Runner.class);
-        query.setParameter("runner_id", runner_id);
-        List<Runner> list = query.getResultList();
-        if(!(list.isEmpty())){this.runner = list.get(0);}
+
+    public Runner getRunner(){
+        // TypedQuery<Runner> query = entityManager.createNamedQuery("getRunner", Runner.class);
+        // query.setParameter("runner_id", runner_id);
+        // List<Runner> list = query.getResultList();
+        // if(!(list.isEmpty())){this.runner = list.get(0);}
 
         return this.runner;
     }
 
-    
+  
     public void completeOrder(){
         if (this.runner.getRunnerStatus().equals(RunnerStatus.BUSY)){
             this.runner.setRunnerStatus(RunnerStatus.AVAILABLE);

@@ -1,11 +1,11 @@
 package com.redhat.project.rest;
 
-import java.util.HashMap;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.security.Security;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -15,19 +15,17 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.security.auth.Subject;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 
 import com.redhat.project.model.Meal;
 import com.redhat.project.model.Orders;
 import com.redhat.project.model.Orders.OrderStatus;
-import com.redhat.project.model.Runner.RunnerStatus;
 import com.redhat.project.model.Restaurant;
 import com.redhat.project.model.Runner;
 import com.redhat.project.model.User;
@@ -36,7 +34,6 @@ import com.redhat.project.services.CustomerController;
 import com.redhat.project.services.RestaurantOwnerController;
 import com.redhat.project.services.RunnerController;
 import com.redhat.project.util.Authenticator;
-import com.redhat.project.util.Wrapper;
 
 
 @Stateless
@@ -54,15 +51,18 @@ public class Apis {
     private CustomerController customerController;
 
     @Inject
-    private Authenticator authenticator;
-
+    private RunnerController runnerController;
 
     @Inject
     private RestaurantOwnerController restaurantOwnerController;
 
+    @Inject
+    private Authenticator authenticator;
+
     private boolean inited = false;
 
-    @PermitAll
+    private Role loggedIn = null;
+
     @GET    
     @Path("initialization")
     public boolean initialization(){
@@ -70,7 +70,7 @@ public class Apis {
             return false;
         try{
             Runner runner = new Runner("test", "youssef");
-            Runner runner2 = new Runner("fares", "faresKarim");
+            Runner runner2 = new Runner("fares", "test");
             runner.setDeliveryFees(69);
             runner2.setDeliveryFees(10);
 
@@ -133,12 +133,12 @@ public class Apis {
     // }
 
 
-    @RolesAllowed("CUSTOMER")
-    @GET
-    @Path("restaurants")
-    public List<Restaurant> getRestaurantsList(){
-        return customerController.getRestaurants();
-    }
+    // @RolesAllowed("CUSTOMER")
+    // @GET
+    // @Path("restaurants")
+    // public List<Restaurant> getRestaurantsList(){
+    //     return customerController.getRestaurants();
+    // }
 
 
     // @GET
@@ -149,7 +149,6 @@ public class Apis {
     //     return query.getResultList();
     // }
 
-    
 
     // @GET
     // @Path("runners")
@@ -174,5 +173,86 @@ public class Apis {
     // public Runner getRunner(@QueryParam("runner_id") int runner_id){
     //     return runnerController.getRunner(runner_id);
     // }
+
+
+    @GET    
+    @Path("login")
+    public User login(){
+        User user = authenticator.authenticate();
+        Role role = user.getRole();
+        switch (role){
+            case CUSTOMER:
+                this.loggedIn = Role.CUSTOMER;
+                this.customerController.setCustomer(user);
+                break;
+            case RUNNER:
+                this.loggedIn = Role.RUNNER;
+                this.runnerController.setRunner((Runner)user);  
+                break;
+            case RESTUARANT_OWNER:
+                this.loggedIn = Role.RESTUARANT_OWNER;
+                this.restaurantOwnerController.setOwner(user);
+                break;
+            default:
+                break;
+        }
+        return user;
+    }
+
+
+    @PUT
+    @Path("logout")
+    public boolean logout(){
+        try{
+            this.loggedIn = null;
+            this.customerController.setCustomer(null);
+            this.runnerController.setRunner(null);  
+            this.restaurantOwnerController.setOwner(null);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+
     
+    @POST
+    @Path("signup")
+    public boolean signup(Map<String,String> map)throws Exception{
+        boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
+
+        TypedQuery<User> query = entityManager.createNamedQuery("getUser", User.class);
+        query.setParameter("userName", map.get("userName"));
+        List<User> users = query.getResultList();   
+        if(users.size() > 0)
+            throw new Exception("User already exists"); 
+
+        String name = map.get("name");
+        String userName = map.get("userName");
+        String password = map.get("password");
+        String role = map.get("role");
+
+        User user = new User(name, userName);
+        user.setRole(Role.valueOf(role));
+        entityManager.persist(user);
+
+        //EAP_HOME/bin/add-user.bat -a -u "appuser1" -p "password1!" -g "guest"
+        if(isWindows){
+            Runtime.getRuntime().exec(String.format("cmd.exe /c  add-user.bat -a -u %s -p %s -g %s", userName, password, role));
+        }else{
+            Runtime.getRuntime().exec(String.format("sh add-user.sh -a -u %s -p %s -g %s", userName, password, role));
+        }
+        
+        return true;
+    }
+
+
+    // @GET
+    // @Path("users")
+    // public List<User> getAllUsersList(){
+    //    TypedQuery<User> query = entityManager
+    //    .createQuery("select r from User r", User.class);
+    //    return query.getResultList();
+    // }
+    
+
 }

@@ -25,10 +25,8 @@ import javax.ws.rs.QueryParam;
 import com.redhat.project.model.Meal;
 import com.redhat.project.model.Orders;
 import com.redhat.project.model.Restaurant;
-import com.redhat.project.model.User;
 import com.redhat.project.services.RestaurantOwnerController;
 
-import com.redhat.project.util.Authenticator;
 import com.redhat.project.util.Wrapper;
 
 
@@ -51,10 +49,6 @@ public class OwnerApis{
     private RestaurantOwnerController restaurantOwnerController;
 
 
-    @Inject
-    private Authenticator authenticator;
-    
-
     @GET
     @Path("orders")
     public List<Orders> getOrdersList(){
@@ -66,8 +60,7 @@ public class OwnerApis{
     @GET
     @Path("restaurant")
     public Restaurant getRestaurant(@QueryParam("restaurant_id") int restaurant_id) throws Exception{
-        User owner = authenticator.authenticate();
-        return restaurantOwnerController.getRestaurant(restaurant_id,owner.getId());
+        return restaurantOwnerController.getRestaurant(restaurant_id);
     }
 
 

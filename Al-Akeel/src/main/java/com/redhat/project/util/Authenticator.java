@@ -22,7 +22,7 @@ public class Authenticator {
     public User authenticate(){
         try{
             String name = context.getCallerPrincipal().getName();
-            TypedQuery<User> query = entityManager.createQuery("select u from User u where u.userName = :userName",User.class);
+            TypedQuery<User> query = entityManager.createQuery("SELECT u from User u where u.userName = :userName",User.class);
             query.setParameter("userName", name);
             User user = query.getResultList().get(0);
             return user;

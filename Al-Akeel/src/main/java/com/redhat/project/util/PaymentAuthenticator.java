@@ -1,6 +1,5 @@
 package com.redhat.project.util;
 
-import java.util.LinkedList;
 import java.util.Map;
 
 //TODO add date check

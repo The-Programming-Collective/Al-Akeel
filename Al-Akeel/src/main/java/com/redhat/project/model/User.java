@@ -18,6 +18,7 @@ import javax.persistence.UniqueConstraint;
 
 @NamedQueries({
     @NamedQuery(name="getUser",query="SELECT U from User U where U.userName = :userName"),
+
 })
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"userName"}))
 @Entity
