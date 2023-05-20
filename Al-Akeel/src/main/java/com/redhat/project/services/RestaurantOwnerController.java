@@ -27,17 +27,23 @@ public class RestaurantOwnerController {
     @PersistenceContext(unitName = "persistUnit")
     private EntityManager entityManager;
     private Restaurant restaurant;
-    
-    public List<Restaurant> getRestaurant(int restaurant_id, int owner_id) throws Exception{
-        TypedQuery<Restaurant> q = entityManager.createNamedQuery("getRestaurant",Restaurant.class);
-        q.setParameter("res_id", restaurant_id);
-        q.setParameter("owner_id", owner_id);
 
-        List<Restaurant> res = q.getResultList();
 
-        if(res.size()!=0){this.restaurant=res.get(0);}
-        
-        return res;
+    public Restaurant getRestaurant(int restaurant_id, int owner_id) throws Exception{
+        try{
+            TypedQuery<Restaurant> q = entityManager.createNamedQuery("getRestaurant",Restaurant.class);
+            q.setParameter("res_id", restaurant_id);
+            q.setParameter("owner_id", owner_id);
+
+            List<Restaurant> res = q.getResultList();
+
+            if(res.size()!=0){this.restaurant=res.get(0);}
+            
+            return this.restaurant;
+
+        }catch(Exception e){
+            return null;
+        }
     }
 
 
@@ -119,6 +125,13 @@ public class RestaurantOwnerController {
         map.put("earnings", earnings);
         
         return map;
+    }
+
+
+    public List<Orders> getOrders(){
+        TypedQuery<Orders> query = entityManager.createNamedQuery("getOrders", Orders.class);
+        query.setParameter("restaurant_id", restaurant.getId());
+        return query.getResultList();
     }
 
 }

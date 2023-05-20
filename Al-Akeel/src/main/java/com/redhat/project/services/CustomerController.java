@@ -2,6 +2,7 @@ package com.redhat.project.services;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -35,7 +36,12 @@ public class CustomerController {
     @PersistenceContext(unitName = "persistUnit")
     private EntityManager entityManager;
 
-    // private User customer;
+    private User customer;
+
+    public void setCustomer(User customer) {
+        this.customer = customer;
+    }
+
 
     // used in both create order and edit order
     public boolean setItemsList(Orders order,Set<Integer> meals_ids){
@@ -54,6 +60,7 @@ public class CustomerController {
         }
         
     }
+
 
     public Orders createOrder(int restaurant_id,Set<Integer> meals_ids){
         Orders order = new Orders();
@@ -87,6 +94,16 @@ public class CustomerController {
             return true;
         }
         else{return false;}
+    }
+
+
+    public List<Restaurant> getRestaurants(){
+        try{
+            TypedQuery<Restaurant> query = entityManager.createNamedQuery("getRestaurants",Restaurant.class);
+            return query.getResultList();
+        }catch(Exception e){
+            return null;
+        }
     }
 
 

@@ -38,8 +38,6 @@ public class Meal implements Serializable {
 
     @ManyToMany(mappedBy = "itemsList")
     private Set<Orders> order;
-    // foreign keys
-    // fk_restuarantId;
 
     
     // Getters

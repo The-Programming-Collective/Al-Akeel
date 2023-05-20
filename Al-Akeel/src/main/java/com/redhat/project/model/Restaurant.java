@@ -19,6 +19,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "getRestaurant", query = "SELECT r from Restaurant r where r.id = :res_id and r.owner.id = :owner_id"),
+    @NamedQuery(name = "getRestaurants", query = "select o from Restaurant o"),
 })
 public class Restaurant implements Serializable {
 

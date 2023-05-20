@@ -9,12 +9,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 
-
+@NamedQueries({
+    @NamedQuery(name="getUser",query="SELECT U from User U where U.userName = :userName"),
+})
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"userName"}))
 @Entity
 public class User implements Serializable {
@@ -25,8 +29,6 @@ public class User implements Serializable {
         this.name = name;
         this.userName = userName;
     }
-
-
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
