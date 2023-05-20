@@ -25,6 +25,13 @@ public class Runner extends User{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
     
+
+    public Runner(String name, String userName){
+        super(name, userName);
+        this.setRole(Role.RUNNER);
+        this.runnerStatus = RunnerStatus.AVAILABLE;
+    }
+
     public Runner(){
         this.setRole(Role.RUNNER);
         this.runnerStatus = RunnerStatus.AVAILABLE;
@@ -34,7 +41,7 @@ public class Runner extends User{
     private RunnerStatus runnerStatus;
 
     @OneToMany(mappedBy = "runner",fetch = FetchType.EAGER)
-    private Set<Orders> orders = new LinkedHashSet<>();
+    private Set<Orders> orders = new LinkedHashSet<Orders>();
 
     // Getters
     public int getId(){return this.id;}

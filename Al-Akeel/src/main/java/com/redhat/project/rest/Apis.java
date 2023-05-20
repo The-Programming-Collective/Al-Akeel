@@ -6,6 +6,10 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -39,6 +43,9 @@ import com.redhat.project.util.Wrapper;
 @Produces("application/json")  
 @Path("/")
 public class Apis {
+    @Resource
+    EJBContext context;
+
     @PersistenceContext(unitName = "persistUnit")
     private EntityManager entityManager;
 
@@ -53,50 +60,61 @@ public class Apis {
     
     @PostConstruct
     private void init(){
-        Runner runner = new Runner();
-        Runner runner2 = new Runner();
-        runner.setName("ahmed");
-        runner2.setName("yousef");
+        Runner runner = new Runner("youssef", "greatyassoo");
+        Runner runner2 = new Runner("fares", "faresKarim");
+        runner.setDeliveryFees(69);
         runner2.setDeliveryFees(10);
 
-        runner.setRunnerStatus(RunnerStatus.AVAILABLE);
         
-        User owner = new User();
-        owner.setName("ali");
+        User owner = new User("mostafa", "mainUseless");
         owner.setRole(Role.RESTUARANT_OWNER);
-        
         Restaurant res = new Restaurant("koshary el tahrir");
+        Meal meal = new Meal("koshary",30.0,res);
+        Meal meal2 = new Meal("Roz-blbn",10.0,res);
         res.setOwner(owner);
+        res.addMeal(meal);
+        res.addMeal(meal2);
+
+
+        User owner2 = new User("kemol", "hecker");
+        owner2.setRole(Role.RESTUARANT_OWNER);
+        Restaurant res2 = new Restaurant("KFC");
+        Meal meal3 = new Meal("Mighty zinger",200.0, res2);
+        Meal meal4 = new Meal("twister",100.0, res2);
+        res2.setOwner(owner2);
+        res2.addMeal(meal3);
+        res2.addMeal(meal4);
         
+
         Orders order = new Orders();
         order.setName("Order1");
         order.setRestaurant(res);
         order.setRunner(runner);
-        runner.addAssignedOrder(order);
-        order.setOrderStatus(OrderStatus.DELIVERED);
-        
-        Meal meal = new Meal("koshary",30.0,res);
-        Meal meal2 = new Meal("Roz-blbn",10.0,res);
-        res.addMeal(meal);
-        res.addMeal(meal2);
         order.addItem(meal);
         order.addItem(meal2);
+        runner.addAssignedOrder(order);
+        order.setOrderStatus(OrderStatus.DELIVERED);
 
-        // res.getMealsList().iterator().next().getName();
         
         entityManager.persist(owner);
+        entityManager.persist(owner2);
         entityManager.persist(res);
+        entityManager.persist(res2);
         entityManager.persist(meal);
         entityManager.persist(meal2);
+        entityManager.persist(meal3);
+        entityManager.persist(meal4);
         entityManager.persist(runner);
         entityManager.persist(runner2);
         entityManager.persist(order);
     }
 
 
+
     @GET
     @Path("orders")
     public List<Orders> getOrdersList(){
+        
         TypedQuery<Orders> query = entityManager
         .createQuery("select o from Orders o", Orders.class);
         return query.getResultList();
@@ -206,7 +224,7 @@ public class Apis {
     @GET
     @Path("completedOrders")
     public Map<String,Integer> getCompletedOrders(){
-        Map<String,Integer> map = new HashMap<>();
+        Map<String,Integer> map = new HashMap<String,Integer>();
         map.put("completedOrders", runnerController.getCompletedOrdersCount());
         return map;
     } 
@@ -235,6 +253,14 @@ public class Apis {
     @Path("order")
     public boolean editOrder(Wrapper<Integer,Set<Integer>> orderWrapper){
         return customerController.editOrder(orderWrapper.value1, orderWrapper.value2);
+    }
+
+
+    @PermitAll
+    @GET
+    @Path("test")
+    public String test(){
+        return context.getCallerPrincipal().getName();
     }
 
     

@@ -2,19 +2,40 @@
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
-<web-app>
-  <display-name>Archetype Created Web Application</display-name>
+<web-app>   
+
+    <context-param>
+        <param-name>resteasy.role.based.security</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>All resources</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>CUSTOMER</role-name>
+            <role-name>OWNER</role-name>
+            <role-name>RUNNER</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-role>
+	    <role-name>CUSTOMER</role-name>
+    </security-role>
+    <security-role>
+	    <role-name>OWNER</role-name>
+    </security-role>
+    <security-role>
+        <role-name>RUNNER</role-name>
+    </security-role>
+
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>ApplicationRealm</realm-name>
+    </login-config>
+
+
+   
 </web-app>
-<security-constraint>
-<web-resource-collection>
-     <web-resource-name>All resources</web-resource-name>
-     <url-pattern>/*</url-pattern>
- </web-resource-collection>
- <auth-constraint>
-        <role-name>*</role-name>
- </auth-constraint>
-</security-constraint>
-<login-config>
-    <auth-method>BASIC</auth-method>
-    <realm-name>basicRealm</realm-name>
-</login-config>

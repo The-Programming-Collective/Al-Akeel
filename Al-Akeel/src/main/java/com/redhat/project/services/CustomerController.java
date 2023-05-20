@@ -35,7 +35,7 @@ public class CustomerController {
     @PersistenceContext(unitName = "persistUnit")
     private EntityManager entityManager;
 
-    private User customer;
+    // private User customer;
 
     // used in both create order and edit order
     public boolean setItemsList(Orders order,Set<Integer> meals_ids){
