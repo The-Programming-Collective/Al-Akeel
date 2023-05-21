@@ -41,9 +41,7 @@ public class RunnerApis {
 
     @GET
     public Runner getRunner(){
-        Runner runner = (Runner)authenticator.authenticate();
-        runnerController.setRunner(runner);
-        return runner;
+        return (Runner)authenticator.authenticate();
     }
 
 

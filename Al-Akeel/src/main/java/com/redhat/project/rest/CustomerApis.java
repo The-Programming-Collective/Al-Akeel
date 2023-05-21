@@ -15,8 +15,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import com.redhat.project.model.Orders;
 import com.redhat.project.model.Restaurant;
-import com.redhat.project.model.User;
 import com.redhat.project.services.CustomerController;
 import com.redhat.project.util.Authenticator;
 import com.redhat.project.util.Wrapper;
@@ -31,6 +31,8 @@ public class CustomerApis {
     
     @Inject
     CustomerController customerController;
+
+
     @Inject
     Authenticator authenticator;
 
@@ -41,12 +43,17 @@ public class CustomerApis {
         return customerController.getRestaurants();
     }
 
+    
+    @GET
+    @Path("orders")
+    public Set<Orders> getOrders(){
+        return authenticator.authenticate().getOrders();
+    }
+
 
     @POST
     @Path("order")
     public Object createOrder(Wrapper<Integer,Set<Integer>> orderWrapper){
-        User customer = authenticator.authenticate();
-        customerController.setCustomer(customer);
         try{
             return customerController.createOrder(orderWrapper.value1, orderWrapper.value2);
         }catch(Exception e){

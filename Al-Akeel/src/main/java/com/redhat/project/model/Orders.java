@@ -22,6 +22,7 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "getOrders" , query = "SELECT r from Orders r where r.users = :user"),
+    @NamedQuery(name = "getOrdersList", query = "SELECT o from Orders o where o.restaurant.id = :restaurant_id")
 })
 public class Orders implements Serializable{
     public enum OrderStatus{PREPARING, DELIVERED, CANCELED}
@@ -96,9 +97,7 @@ public class Orders implements Serializable{
     }
 
 
-    public int getRestaurant() {return restaurant.getId();}
-    public Set<Meal> getItemsList() {return itemsList;}
-
+    
     public double getTotalPrice() {
         if(orderStatus != OrderStatus.DELIVERED){
             totalPrice =  0.0;
@@ -114,14 +113,13 @@ public class Orders implements Serializable{
     public OrderStatus getOrderStatus() {return orderStatus;}
     public String getName() {return name;}
     public String getDate() {return date;}
+    public int getRestaurant() {return restaurant.getId();}
+    public Set<Meal> getItemsList() {return itemsList;}
+
     
     // Setters
-    public void setRunner(Runner runner) {
-        this.users.add(runner) ;
-    }
-    public void setCustomer(User customer){
-        this.users.add(customer) ;
-    }
+    public void setRunner(Runner runner) {this.users.add(runner) ;}
+    public void setCustomer(User customer){this.users.add(customer);}
     public void setRestaurant(Restaurant restaurant) {this.restaurant = restaurant;}
     public void setItemsList(HashSet<Meal> itemsList) {this.itemsList = itemsList;}
     public void setOrderStatus(OrderStatus orderStatus) {this.orderStatus = orderStatus;}

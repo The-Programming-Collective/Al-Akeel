@@ -6,13 +6,16 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.ws.rs.QueryParam;
 
 import com.redhat.project.model.Meal;
 import com.redhat.project.model.Orders;
 import com.redhat.project.model.Orders.OrderStatus;
+import com.redhat.project.util.Authenticator;
 import com.redhat.project.model.Restaurant;
 import com.redhat.project.model.User;
 
@@ -25,29 +28,25 @@ import com.redhat.project.model.User;
 @Stateless
 public class RestaurantOwnerController {
 
+
     @PersistenceContext(unitName = "persistUnit")
     private EntityManager entityManager;
 
-    private Restaurant restaurant;
 
-    private User owner;
+    @Inject
+    private Authenticator authenticator;
 
-    public boolean setOwner(User owner){
-        this.owner = owner;
-        return true;
-    }
-
-    public Restaurant getRestaurant(int restaurant_id) throws Exception{
+  
+    public Restaurant getRestaurant(int restaurant_id){
         try{
+            User owner = authenticator.authenticate();
             TypedQuery<Restaurant> q = entityManager.createNamedQuery("getRestaurant",Restaurant.class);
             q.setParameter("res_id", restaurant_id);
             q.setParameter("owner_id", owner.getId());
 
             List<Restaurant> res = q.getResultList();
 
-            if(res.size()!=0){this.restaurant=res.get(0);}
-            
-            return this.restaurant;
+            return res.get(0);
 
         }catch(Exception e){
             return null;
@@ -55,12 +54,18 @@ public class RestaurantOwnerController {
     }
 
 
-    public Set<Meal> getMenu(){
-        return restaurant.getMealsList();
+    public Set<Meal> getMenu(int restaurant_id){
+        return getRestaurant(restaurant_id).getMealsList();
     }
 
     
-    public void setMenu(Set<Meal> menu){
+    public boolean setMenu(int restaurant_id, Set<Meal> menu){
+        User owner = authenticator.authenticate();
+        Restaurant restaurant = getRestaurant(restaurant_id);
+
+        if(restaurant.getOwner().getId()!=owner.getId())
+            return false;
+
         Set<Meal> oldMenu =  restaurant.getMealsList();
 
         for(Meal item: oldMenu){
@@ -75,10 +80,12 @@ public class RestaurantOwnerController {
         }
         
         restaurant.setMealsList(menu);
+        return true;
     }
 
 
-    public void addMenuMeal(Meal meal){
+    public void addMenuMeal(int restaurant_id, Meal meal){
+        Restaurant restaurant = getRestaurant(restaurant_id);
         meal.setRestaurant(restaurant);
         meal.setAvaliable(true);
         restaurant.addMeal(meal);
@@ -86,27 +93,35 @@ public class RestaurantOwnerController {
     }
 
 
-    public void removeMenuMeal(int meal_id){
+    public void removeMenuMeal(int restaurant_id,int meal_id){
+        Restaurant restaurant = getRestaurant(restaurant_id);
         Meal meal = entityManager.find(Meal.class, meal_id);
         restaurant.removeMeal(meal);
     }
 
 
-    public void updateMenuMeal(int meal_id, Meal meal){
+    public boolean updateMenuMeal(int restaurant_id,int meal_id, Meal meal){
+        Restaurant restaurant = getRestaurant(restaurant_id);
         Meal oldMeal = entityManager.find(Meal.class, meal_id);
 
+        if(!restaurant.getMealsList().contains(oldMeal))
+            return false;
+    
         oldMeal.setName(meal.getName());
         oldMeal.setAvaliable(meal.isAvaliable());
         oldMeal.setPrice(meal.getPrice());
         
         entityManager.merge(oldMeal);
+        return true;
     }
 
 
-    public Map<String,Double> createReport(){
+    public Map<String,Double> createReport(int restaurant_id){
+        Restaurant restaurant = getRestaurant(restaurant_id);
+
         TypedQuery<Orders> query = entityManager
-        .createNamedQuery("getOrders", Orders.class);
-        query.setParameter("restaurant_id", this.restaurant.getId());
+        .createNamedQuery("getOrdersList", Orders.class);
+        query.setParameter("restaurant_id", restaurant.getId());
         
         List<Orders> orders = query.getResultList();
 
@@ -136,9 +151,9 @@ public class RestaurantOwnerController {
     }
 
 
-    public List<Orders> getOrders(){
-        TypedQuery<Orders> query = entityManager.createNamedQuery("getOrders", Orders.class);
-        query.setParameter("restaurant_id", restaurant.getId());
+    public List<Orders> getOrders(@QueryParam("restaurant_id") int restaurant_id){
+        TypedQuery<Orders> query = entityManager.createNamedQuery("getOrdersList", Orders.class);
+        query.setParameter("restaurant_id", restaurant_id);
         return query.getResultList();
     }
 

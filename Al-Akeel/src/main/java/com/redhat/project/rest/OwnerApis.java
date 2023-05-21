@@ -33,7 +33,7 @@ import com.redhat.project.util.Wrapper;
 @Consumes("application/json")
 @Produces("application/json")  
 @Path("/owner")
-@RolesAllowed("OWNER")
+@RolesAllowed("RESTUARANT_OWNER")
 public class OwnerApis{
     @Resource
     EJBContext context;
@@ -49,8 +49,8 @@ public class OwnerApis{
 
     @GET
     @Path("orders")
-    public List<Orders> getOrdersList(){
-        return restaurantOwnerController.getOrders();
+    public List<Orders> getOrdersList(@QueryParam("restaurant_id") int restaurant_id){
+        return restaurantOwnerController.getOrders(restaurant_id);
     }
 
 
@@ -63,40 +63,52 @@ public class OwnerApis{
 
     @POST
     @Path("meal")
-    public boolean addMenuMeal(Meal meal){
-        restaurantOwnerController.addMenuMeal(meal);
+    public boolean addMenuMeal(Wrapper<Integer,Meal> Obj){
+        restaurantOwnerController.addMenuMeal(Obj.value1,Obj.value2);
         return true;
     }
 
 
     @DELETE
     @Path("meal")
-    public boolean removeMenuMeal(@QueryParam("meal_id") int meal_id){
-        restaurantOwnerController.removeMenuMeal(meal_id);
+    public boolean removeMenuMeal(@QueryParam("retaurant_id") int restaurant_id, @QueryParam("meal_id") int meal_id){
+        restaurantOwnerController.removeMenuMeal(restaurant_id,meal_id);
         return true;
     }
 
 
     @PUT
     @Path("meal")
-    public boolean updateMeal(Wrapper<Integer,Meal> obj){
-        restaurantOwnerController.updateMenuMeal(obj.value1, obj.value2);
-        return true;
+    public boolean updateMeal(Wrapper<Wrapper<Integer,Integer>,Meal> obj){
+        return restaurantOwnerController.updateMenuMeal(obj.value1.value1,obj.value1.value2,obj.value2);
     } 
 
 
     @POST
     @Path("menu")
-    public boolean createMenu(Set<Meal> mealsList){
-        restaurantOwnerController.setMenu(mealsList);
-        return true;
+    public boolean createMenu(Wrapper<Integer,Set<Meal>> obj){
+        return restaurantOwnerController.setMenu(obj.value1,obj.value2);
     }
 
     
     @GET
     @Path("report")
-    public Object getReport(){
-        return restaurantOwnerController.createReport();
+    public Object getReport(@QueryParam("restaurant_id") int restaurant_id){
+        return restaurantOwnerController.createReport(restaurant_id);
     }
    
 } 
+
+
+// {
+//     "value1": 1,
+//     "value2": [
+        //{
+//         "name": "kingAl-Tahrir",
+//         "price": 30.0,
+//     },{
+//         "name":"Family Meal",
+//         "price":150.0,
+//     }
+//]
+// }

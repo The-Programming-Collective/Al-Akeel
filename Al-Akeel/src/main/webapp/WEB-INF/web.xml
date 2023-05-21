@@ -16,7 +16,7 @@
         </web-resource-collection>
         <auth-constraint>
             <role-name>CUSTOMER</role-name>
-            <role-name>OWNER</role-name>
+            <role-name>RESTUARANT_OWNER</role-name>
             <role-name>RUNNER</role-name>
         </auth-constraint>
     </security-constraint>
@@ -43,7 +43,7 @@
 	    <role-name>CUSTOMER</role-name>
     </security-role>
     <security-role>
-	    <role-name>OWNER</role-name>
+	    <role-name>RESTUARANT_OWNER</role-name>
     </security-role>
     <security-role>
         <role-name>RUNNER</role-name>

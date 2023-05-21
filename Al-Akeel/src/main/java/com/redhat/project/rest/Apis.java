@@ -4,7 +4,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.ejb.EJBContext;
@@ -27,12 +26,7 @@ import com.redhat.project.model.Restaurant;
 import com.redhat.project.model.Runner;
 import com.redhat.project.model.User;
 import com.redhat.project.model.User.Role;
-import com.redhat.project.services.CustomerController;
-import com.redhat.project.services.RestaurantOwnerController;
-import com.redhat.project.services.RunnerController;
 import com.redhat.project.util.Authenticator;
-import com.redhat.project.util.Wrapper;
-
 
 @Stateless
 @Consumes("application/json")
@@ -44,15 +38,6 @@ public class Apis {
 
     @PersistenceContext(unitName = "persistUnit")
     private EntityManager entityManager;
-
-    @Inject
-    private CustomerController customerController;
-
-    @Inject
-    private RunnerController runnerController;
-
-    @Inject
-    private RestaurantOwnerController restaurantOwnerController;
 
     @Inject
     private Authenticator authenticator;
@@ -237,15 +222,13 @@ public class Apis {
         switch (role){
             case CUSTOMER:
                 this.loggedIn = Role.CUSTOMER;
-                this.customerController.setCustomer(user);
+                // this.customerController.setCustomer(user);
                 break;
             case RUNNER:
                 this.loggedIn = Role.RUNNER;
-                this.runnerController.setRunner((Runner)user);  
                 break;
             case RESTUARANT_OWNER:
                 this.loggedIn = Role.RESTUARANT_OWNER;
-                this.restaurantOwnerController.setOwner(user);
                 break;
             default:
                 break;
@@ -259,9 +242,6 @@ public class Apis {
     public boolean logout(){
         try{
             this.loggedIn = null;
-            this.customerController.setCustomer(null);
-            this.runnerController.setRunner(null);  
-            this.restaurantOwnerController.setOwner(null);
             return true;
         }catch(Exception e){
             return false;

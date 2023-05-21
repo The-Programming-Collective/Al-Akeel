@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "bdda83b8-7f4f-4d88-b28d-ec9ef7404b72",
+		"_postman_id": "5ff412d2-08a2-4dcc-be25-48986f84cc22",
 		"name": "Al-Akeel-V2.0",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25094392"
+		"_exporter_id": "27524273"
 	},
 	"item": [
 		{
@@ -133,6 +133,28 @@
 								"api",
 								"customer",
 								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "customer get orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/customer/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"customer",
+								"orders"
 							]
 						}
 					},
@@ -370,7 +392,211 @@
 		},
 		{
 			"name": "Owner",
-			"item": [],
+			"item": [
+				{
+					"name": "getOrdersList",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/owner/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"owner",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get restaurant (sets restaurant)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/owner/restaurant?restaurant_id=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"owner",
+								"restaurant"
+							],
+							"query": [
+								{
+									"key": "restaurant_id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addMenuMeal",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"value1\": 2,\n    \"value2\": {\n        \"name\": \"twisterTest\",\n        \"price\": 69\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/owner/meal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"owner",
+								"meal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete meal from meal list",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/owner/meal?retaurant_id=2&meal_id=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"owner",
+								"meal"
+							],
+							"query": [
+								{
+									"key": "retaurant_id",
+									"value": "2"
+								},
+								{
+									"key": "meal_id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update meal",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \n    \"value1\":{\n        \"value1\":2,\n        \"value2\":4\n    },\n    \"value2\": {\n       \n        \"name\": \"family bucket 12 pcs\",\n        \"price\": 500\n \n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/owner/meal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"owner",
+								"meal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set Restaurant Menu",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"value1\": 2,\n    \"value2\": [{\n        \"name\": \"kingAl-Tahrir\",\n        \"price\": 30.0\n    },{\n        \"name\":\"Family Meal\",\n        \"price\":150.0\n    }]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/owner/menu",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"owner",
+								"menu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get restaurant report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/owner/report?restaurant_id=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"owner",
+								"report"
+							],
+							"query": [
+								{
+									"key": "restaurant_id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
 			"auth": {
 				"type": "basic",
 				"basic": [
