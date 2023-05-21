@@ -27,6 +27,8 @@ import com.redhat.project.model.Runner;
 import com.redhat.project.model.User;
 import com.redhat.project.model.User.Role;
 import com.redhat.project.util.Authenticator;
+import com.redhat.project.util.CreditCardInfo;
+import com.redhat.project.util.PaymentAuthenticator;
 
 @Stateless
 @Consumes("application/json")
@@ -283,6 +285,5 @@ public class Apis {
         
         return true;
     }
-
 
 }

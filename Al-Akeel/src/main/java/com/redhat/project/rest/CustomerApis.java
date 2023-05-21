@@ -19,6 +19,7 @@ import com.redhat.project.model.Orders;
 import com.redhat.project.model.Restaurant;
 import com.redhat.project.services.CustomerController;
 import com.redhat.project.util.Authenticator;
+import com.redhat.project.util.CreditCardInfo;
 import com.redhat.project.util.Wrapper;
 
 
@@ -53,9 +54,9 @@ public class CustomerApis {
 
     @POST
     @Path("order")
-    public Object createOrder(Wrapper<Integer,Set<Integer>> orderWrapper){
+    public Object createOrder(Wrapper<CreditCardInfo,Wrapper<Integer,Set<Integer>>> orderWrapper){
         try{
-            return customerController.createOrder(orderWrapper.value1, orderWrapper.value2);
+            return customerController.createOrder(orderWrapper.value1, orderWrapper.value2.value1, orderWrapper.value2.value2);
         }catch(Exception e){
             return false;
         }

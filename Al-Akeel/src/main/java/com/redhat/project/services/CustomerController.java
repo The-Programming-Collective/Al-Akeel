@@ -16,6 +16,8 @@ import com.redhat.project.model.Restaurant;
 import com.redhat.project.model.User;
 import com.redhat.project.model.Runner.RunnerStatus;
 import com.redhat.project.util.Authenticator;
+import com.redhat.project.util.CreditCardInfo;
+import com.redhat.project.util.PaymentAuthenticator;
 import com.redhat.project.model.Runner;
 
 
@@ -49,7 +51,8 @@ public class CustomerController {
     }
 
 
-    public Orders createOrder(int restaurant_id,Set<Integer> meals_ids){
+    public Orders createOrder(CreditCardInfo creditCardInfo, int restaurant_id,Set<Integer> meals_ids){
+
         User customer = authenticator.authenticate();
         Orders order = new Orders();
 
@@ -61,8 +64,13 @@ public class CustomerController {
 
         if(order.getItemsList().size() == 0)
             return null;
+        
+        PaymentAuthenticator paymentAuthenticator = new PaymentAuthenticator();
+        if(!paymentAuthenticator.pay(creditCardInfo))
+            return null;
 
         // Set first available runner to order
+        // need to check if no runners available
         TypedQuery<Runner> query = entityManager.createNamedQuery("getRunnerOnStatus", Runner.class);
         query.setParameter("runner_status", RunnerStatus.AVAILABLE);
         query.setMaxResults(1);
@@ -111,3 +119,4 @@ public class CustomerController {
 
 
 }
+

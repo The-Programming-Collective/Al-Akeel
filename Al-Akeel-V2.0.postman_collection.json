@@ -68,7 +68,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"value1\":\"1\",\r\n    \"value2\":[1,2]\r\n}",
+							"raw": "{\r\n        \"value1\": {\r\n            \"CCN\":1234567891234567,\r\n            \"DATE\": \"12/30\",\r\n            \"CVV\": \"123\"   \r\n        },\r\n\r\n        \"value2\": {\r\n            \"value1\": 2,\r\n            \"value2\": [1,2,3]\r\n\r\n        }\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
