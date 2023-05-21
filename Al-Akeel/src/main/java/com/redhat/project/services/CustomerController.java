@@ -58,7 +58,6 @@ public class CustomerController {
         }catch(Exception e){
             return false;
         }
-        
     }
 
 
@@ -76,10 +75,15 @@ public class CustomerController {
         query.setMaxResults(1);
         Runner runner = query.getSingleResult();
         runner.setRunnerStatus(RunnerStatus.BUSY);
+
         order.setRunner(runner);
-        runner.addAssignedOrder(order);
+        order.setCustomer(customer);
+        runner.addOrder(order);
+        customer.addOrder(order);
+
         entityManager.persist(order);
         entityManager.merge(runner);
+        entityManager.merge(customer);
 
         return order;
     }

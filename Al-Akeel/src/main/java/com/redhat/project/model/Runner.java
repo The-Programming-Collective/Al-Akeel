@@ -26,10 +26,11 @@ public class Runner extends User{
     private int id;
     
 
-    public Runner(String name, String userName){
+    public Runner(String name, String userName, double deliveryFees){
         super(name, userName);
         this.setRole(Role.RUNNER);
         this.runnerStatus = RunnerStatus.AVAILABLE;
+        this.deliveryFees = deliveryFees;
     }
 
     public Runner(){
@@ -40,8 +41,6 @@ public class Runner extends User{
     private double deliveryFees;
     private RunnerStatus runnerStatus;
 
-    @OneToMany(mappedBy = "runner",fetch = FetchType.EAGER)
-    private Set<Orders> orders = new LinkedHashSet<Orders>();
 
     // Getters
     public int getId(){return this.id;}
@@ -60,6 +59,6 @@ public class Runner extends User{
     public void setId(int id){this.id = id;}
     public void setDeliveryFees(double fees){this.deliveryFees = fees;}
     public void setRunnerStatus(RunnerStatus runnerStatus){this.runnerStatus = runnerStatus;}
-    public void addAssignedOrder(Orders order){this.orders.add(order);}
+    public void addOrder(Orders order){this.orders.add(order);}
 
 }

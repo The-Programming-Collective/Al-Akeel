@@ -22,6 +22,7 @@ import com.redhat.project.util.Authenticator;
 @Consumes("application/json")
 @Produces("application/json")  
 @Path("runner")
+@RolesAllowed("RUNNER") 
 public class RunnerApis {
 
     @Inject
@@ -31,7 +32,6 @@ public class RunnerApis {
     Authenticator authenticator;
 
 
-    @RolesAllowed("RUNNER")
     @PUT
     @Path("fees")
     public Boolean changeRunnerFees(@QueryParam("new_fees") Double new_fees){
@@ -39,15 +39,14 @@ public class RunnerApis {
     }
 
 
-    @RolesAllowed("RUNNER")
     @GET
-    @Path("runner")
     public Runner getRunner(){
-        return runnerController.getRunner();
+        Runner runner = (Runner)authenticator.authenticate();
+        runnerController.setRunner(runner);
+        return runner;
     }
 
 
-    @RolesAllowed("RUNNER") 
     @GET
     @Path("completedOrders")
     public Map<String,Integer> getCompletedOrders(){
@@ -57,7 +56,6 @@ public class RunnerApis {
     } 
 
 
-    @RolesAllowed("RUNNER")
     @PUT
     @Path("completeOrder")
     public Boolean completeOrder(){

@@ -26,6 +26,7 @@ import com.redhat.project.util.Wrapper;
 @Consumes("application/json")
 @Produces("application/json")  
 @Path("/customer")
+@RolesAllowed("CUSTOMER")
 public class CustomerApis {
     
     @Inject
@@ -33,14 +34,14 @@ public class CustomerApis {
     @Inject
     Authenticator authenticator;
 
-    @RolesAllowed("CUSTOMER")
+    
     @GET
     @Path("restaurants")
     public List<Restaurant> getRestaurantsList(){
         return customerController.getRestaurants();
     }
 
-    @RolesAllowed("CUSTOMER")
+
     @POST
     @Path("order")
     public Object createOrder(Wrapper<Integer,Set<Integer>> orderWrapper){
@@ -53,7 +54,7 @@ public class CustomerApis {
         }
     }
 
-    @RolesAllowed("CUSTOMER")
+    
     @PUT
     @Path("order")
     public boolean editOrder(Wrapper<Integer,Set<Integer>> orderWrapper){

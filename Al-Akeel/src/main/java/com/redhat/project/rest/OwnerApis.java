@@ -1,6 +1,5 @@
 package com.redhat.project.rest;
 
-
 import java.util.List;
 import java.util.Set;
 
@@ -30,12 +29,11 @@ import com.redhat.project.services.RestaurantOwnerController;
 import com.redhat.project.util.Wrapper;
 
 
-
-
 @Stateful
 @Consumes("application/json")
 @Produces("application/json")  
 @Path("/owner")
+@RolesAllowed("OWNER")
 public class OwnerApis{
     @Resource
     EJBContext context;
@@ -56,7 +54,6 @@ public class OwnerApis{
     }
 
 
-    @RolesAllowed("OWNER")
     @GET
     @Path("restaurant")
     public Restaurant getRestaurant(@QueryParam("restaurant_id") int restaurant_id) throws Exception{
@@ -64,7 +61,6 @@ public class OwnerApis{
     }
 
 
-    @RolesAllowed("OWNER")
     @POST
     @Path("meal")
     public boolean addMenuMeal(Meal meal){
@@ -73,7 +69,6 @@ public class OwnerApis{
     }
 
 
-    @RolesAllowed("OWNER")
     @DELETE
     @Path("meal")
     public boolean removeMenuMeal(@QueryParam("meal_id") int meal_id){
@@ -82,7 +77,6 @@ public class OwnerApis{
     }
 
 
-    @RolesAllowed("OWNER")
     @PUT
     @Path("meal")
     public boolean updateMeal(Wrapper<Integer,Meal> obj){
@@ -91,7 +85,6 @@ public class OwnerApis{
     } 
 
 
-    @RolesAllowed("OWNER")
     @POST
     @Path("menu")
     public boolean createMenu(Set<Meal> mealsList){
@@ -99,7 +92,7 @@ public class OwnerApis{
         return true;
     }
 
-    @RolesAllowed("OWNER")
+    
     @GET
     @Path("report")
     public Object getReport(){

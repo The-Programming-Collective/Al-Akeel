@@ -12,19 +12,6 @@ import com.redhat.project.model.Orders;
 import com.redhat.project.model.Runner;
 import com.redhat.project.model.Runner.RunnerStatus;
 
-// Runner can mark an order is delivered and his status to available.
-// Get number of trips completed by a runner make sure orders are not canceled
-// and marked as completed.
-// Note: when creating runner account let user enter delivery fees per order , this value will be
-// reused when calculating the total order value.
-
-// Entities:
-// User: Id ,name, role
-// Meal: id, name , price, fk_restaurantId
-// Order: Id, Item array, total_price, fk_runnerId, fk_restaurantId, order_status(preparing, delivered,
-// canceled )
-// Runner: Id, name, status(available, busy),delivery_fees
-// Restaurant: Id, name, ownerId, list of meals
 
 @Stateless 
 public class RunnerController {
@@ -36,16 +23,6 @@ public class RunnerController {
     public boolean setRunner(Runner runner){
         this.runner = runner;
         return true;
-    }
-
-
-    public Runner getRunner(){
-        // TypedQuery<Runner> query = entityManager.createNamedQuery("getRunner", Runner.class);
-        // query.setParameter("runner_id", runner_id);
-        // List<Runner> list = query.getResultList();
-        // if(!(list.isEmpty())){this.runner = list.get(0);}
-
-        return this.runner;
     }
 
   
@@ -75,7 +52,7 @@ public class RunnerController {
 
     public boolean changeFees(Double newFees){
         try{
-            if(runner.getRunnerStatus().equals(RunnerStatus.BUSY))
+            if(runner.getRunnerStatus()==RunnerStatus.BUSY)
                 throw new IllegalAccessError();
                 
             runner.setDeliveryFees(newFees);
