@@ -16,7 +16,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -77,7 +76,7 @@ public class OwnerApis{
     }
 
 
-    @PUT
+    @POST
     @Path("meal")
     public boolean updateMeal(Wrapper<Wrapper<Integer,Integer>,Meal> obj){
         return restaurantOwnerController.updateMenuMeal(obj.value1.value1,obj.value1.value2,obj.value2);
@@ -98,17 +97,3 @@ public class OwnerApis{
     }
    
 } 
-
-
-// {
-//     "value1": 1,
-//     "value2": [
-        //{
-//         "name": "kingAl-Tahrir",
-//         "price": 30.0,
-//     },{
-//         "name":"Family Meal",
-//         "price":150.0,
-//     }
-//]
-// }

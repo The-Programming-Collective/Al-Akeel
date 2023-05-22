@@ -1,13 +1,11 @@
 package com.redhat.project.rest;
 
-import java.util.HashMap;
-import java.util.Map;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -32,7 +30,7 @@ public class RunnerApis {
     Authenticator authenticator;
 
 
-    @PUT
+    @POST
     @Path("fees")
     public Boolean changeRunnerFees(@QueryParam("new_fees") Double new_fees){
         return runnerController.changeFees(new_fees);
@@ -47,14 +45,12 @@ public class RunnerApis {
 
     @GET
     @Path("completedOrders")
-    public Map<String,Integer> getCompletedOrders(){
-        Map<String,Integer> map = new HashMap<String,Integer>();
-        map.put("completedOrders", runnerController.getCompletedOrdersCount());
-        return map;
+    public Integer getCompletedOrders(){
+        return runnerController.getCompletedOrdersCount();
     } 
 
 
-    @PUT
+    @GET
     @Path("completeOrder")
     public Boolean completeOrder(){
         runnerController.completeOrder();

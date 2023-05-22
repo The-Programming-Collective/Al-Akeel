@@ -9,8 +9,13 @@ export default function Page() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    const auth = 'Basic ' + btoa(username + ':' + password);
+    console.log(auth);
+
+
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
+        handleLogin();
         fetch('http://localhost:8080/Al-Akeel/api/login', {
             method: 'GET',
             headers: {
@@ -21,13 +26,25 @@ export default function Page() {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 if (data.role == 'CUSTOMER') {
                     window.location.href = 'http://localhost:3000/restaurants';
                     console.log('customer');
                 }
+                else if (data.role == 'RUNNER') {
+                    window.location.href = 'http://localhost:3000/runner';
+                    console.log('runner');
+                }
+                else if (data.role == 'RESTAURANT_OWNER') {
+                    window.location.href = 'http://localhost:3000/owner';
+                    console.log('owner');
+                }
             }
             );
+    }
+
+    const handleLogin = () => {
+        localStorage.setItem('username', JSON.stringify(username));
+        localStorage.setItem('password', JSON.stringify(password));
     }
 
 

@@ -140,7 +140,7 @@ public class Apis {
         }else{
             p = Runtime.getRuntime().exec(String.format("sh add-user.sh -a -u %s -p %s -g %s", userName, password, role));
         }
-        Thread.sleep(1000);
+        Thread.sleep(1500);
         p.destroy();
     }
 
