@@ -14,7 +14,10 @@ export default function Page() {
     const auth = 'Basic ' + btoa(username + ':' + password);
 
 
-    useEffect(() => {
+    useEffect(() => getNumberOfCompletedOrders() , []);
+
+
+    const getNumberOfCompletedOrders = () => {
         fetch('http://localhost:8080/Al-Akeel/api/runner/completedOrders', {
             method: 'GET',
             headers: {
@@ -28,8 +31,7 @@ export default function Page() {
                 setCompletedOrders(data);
             }
             );
-
-    }, []);
+    }
 
 
     const handleCompleteOrder = (e: any) => {
@@ -43,9 +45,11 @@ export default function Page() {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
+                getNumberOfCompletedOrders();
             }
             );
     }
+
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
@@ -66,7 +70,6 @@ export default function Page() {
             }
             );
     }
-
 
 
     return (

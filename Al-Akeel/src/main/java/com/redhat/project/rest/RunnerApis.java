@@ -52,8 +52,7 @@ public class RunnerApis {
 
     @GET
     @Path("completeOrder")
-    public Boolean completeOrder(){
-        runnerController.completeOrder();
-        return true;
+    public boolean completeOrder(){
+        return runnerController.completeOrder();
     }
 }

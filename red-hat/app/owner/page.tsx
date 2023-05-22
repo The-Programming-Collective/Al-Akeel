@@ -15,6 +15,7 @@ export default function Page() {
     const [itemPrice, setItemPrice] = useState<any>('');
     const [restaurantId, setRestaurantId] = useState<any>('');
     const [restaurant, setRestaurant] = useState<any>('');
+    const [deleteMealId, setDeletedMealId] = useState<any>('');
     const [mealId, setMealId] = useState<any>([]);
     // const auth = 'Basic ' + btoa(username + ':' + password);
     const auth = 'Basic aGVja2VyOmhlY2tlcg=='
@@ -41,39 +42,33 @@ export default function Page() {
     const handleCreate = (e: any) => {
         e.preventDefault();
         // var itemName = itemNames.split(',').map(function (item: any) {
-        //     return parseArgs(item);
-        // });
-        // var itemPrice = itemPrices.split(',').map(function (item: any) {
-        //     return parseInt(item, 10);
-        // });
-        console.log(itemName);
-        fetch('http://localhost:8080/Al-Akeel/api/owner/createMenu', {
-            method: 'POST',
-            headers: {
-                accept: '*/*',
-                'Content-Type': 'application/json',
-                authorization: auth
-            },
-            // body: JSON.stringify({
-            //     itemNames: itemNames,
-            //     itemPrices: itemPrices
-            // })
-        })
+            //     return parseArgs(item);
+            // });
+            // var itemPrice = itemPrices.split(',').map(function (item: any) {
+                //     return parseInt(item, 10);
+                // });
+                console.log(itemName);
+                fetch('http://localhost:8080/Al-Akeel/api/owner/createMenu', {
+                    method: 'POST',
+                    headers: {
+                        accept: '*/*',
+                        'Content-Type': 'application/json',
+                        authorization: auth
+                    },
+                    // body: JSON.stringify({
+                        //     itemNames: itemNames,
+                        //     itemPrices: itemPrices
+                        // })
+                    })
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
             }
             );
-    }
+            
+        }
+        
 
-
-    // {
-    //     "value1": 2,
-    //     "value2": {
-    //         "name": "twisterTest",
-    //         "price": 69
-    //     }
-    // }
     const handleAdd = (e: any) => {
         e.preventDefault();
         console.log(JSON.stringify(itemName));
@@ -92,8 +87,32 @@ export default function Page() {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
+                handleGetRestaurant(e);
             }
             );
+    }
+
+
+    const handleRemove = (e: any) => {
+        e.preventDefault();
+        let url = 'http://localhost:8080/Al-Akeel/api/owner/meal?retaurant_id='+restaurantId+'&meal_id='+deleteMealId;
+        console.log(url);
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                "Access-Control-Allow-Methods": "GET, PUT, POST, DELETE",
+                'Access-Control-Allow-Origin': '*',
+                authorization: auth,
+                accept: '*/*',
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                handleGetRestaurant(e);
+            }
+            ).catch((error) => {console.log(error);});
     }
 
 
@@ -157,9 +176,9 @@ export default function Page() {
                     <h2>Remove meal: </h2>
                     <br></br>
                     <label className={styles.label}>Meal ID: </label>
-                    <input className={styles.input} type="text" name="itemName" onChange={setMealId} />
+                    <input className={styles.input} type="text" name="deleteMealId" value={deleteMealId} onChange={(e) => setDeletedMealId(e.target.value)} />
                     <br></br>
-                    <button className={styles.submit} type="submit">Submit</button>
+                    <button className={styles.submit} onClick={handleRemove} type="submit">Submit</button>
                 </form>
             </div>
         </main>
