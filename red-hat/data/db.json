@@ -1,0 +1,36 @@
+{
+    "restaurants": [
+        {
+            "name": "McDonalds"
+        },
+        {
+            "name": "Burger King"
+        },
+        {
+            "name": "Wendy's"
+        },
+        {
+            "name": "Taco Bell"
+        },
+        {
+            "name": "Subway"
+        },
+        {
+            "name": "Arby's"
+        }
+    ],
+    "account": {
+        "id": 1,
+        "name": "John Doe",
+        "username": "jdoe",
+        "role": "admin",
+        "status": "",
+        "orders": [
+            "McDonalds",
+            "Burger King",
+            "Wendy's",
+            "Taco Bell",
+            "Subway"
+        ]
+    }
+}

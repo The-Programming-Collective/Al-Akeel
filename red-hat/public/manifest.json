@@ -1,0 +1,13 @@
+{
+    "name": "Al-Akeel",
+    "short_name": "Al-Akeel",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#fff",
+    "theme_color": "#fff",
+    "description": "Al-Akeel",
+    "permissions": [
+        "storage",
+        "http://localhost:8080/*"
+    ]
+}
