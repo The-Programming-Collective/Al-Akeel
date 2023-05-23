@@ -45,8 +45,6 @@ public class Apis {
 
     private boolean inited = false;
 
-    private Role loggedIn = null;
-
     private boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
     
     @GET    
@@ -68,7 +66,7 @@ public class Apis {
 
             
             User owner = new User("mostafa", "mainUseless");
-            owner.setRole(Role.RESTUARANT_OWNER);
+            owner.setRole(Role.RESTAURANT_OWNER);
             executeServerAdd("mainUseless","mainUseless",owner.getRole().toString());
 
             Restaurant res = new Restaurant("koshary el tahrir");
@@ -80,7 +78,7 @@ public class Apis {
             
             
             User owner2 = new User("kemol", "hecker");
-            owner2.setRole(Role.RESTUARANT_OWNER);
+            owner2.setRole(Role.RESTAURANT_OWNER);
             executeServerAdd("hecker","hecker",owner2.getRole().toString());
 
             Restaurant res2 = new Restaurant("KFC");
@@ -140,7 +138,7 @@ public class Apis {
         }else{
             p = Runtime.getRuntime().exec(String.format("sh add-user.sh -a -u %s -p %s -g %s", userName, password, role));
         }
-        Thread.sleep(1000);
+        Thread.sleep(1500);
         p.destroy();
     }
 
@@ -219,21 +217,6 @@ public class Apis {
     @Path("login")
     public User login(){
         User user = authenticator.authenticate();
-        Role role = user.getRole();
-        switch (role){
-            case CUSTOMER:
-                this.loggedIn = Role.CUSTOMER;
-                // this.customerController.setCustomer(user);
-                break;
-            case RUNNER:
-                this.loggedIn = Role.RUNNER;
-                break;
-            case RESTUARANT_OWNER:
-                this.loggedIn = Role.RESTUARANT_OWNER;
-                break;
-            default:
-                break;
-        }
         return user;
     }
 
@@ -242,7 +225,6 @@ public class Apis {
     @Path("logout")
     public boolean logout(){
         try{
-            this.loggedIn = null;
             return true;
         }catch(Exception e){
             return false;

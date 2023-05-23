@@ -32,10 +32,15 @@ public class RunnerController {
             runner.setRunnerStatus(RunnerStatus.AVAILABLE);
             runner.returnAssignedOrder().setOrderStatus(OrderStatus.DELIVERED);
             
+            try{
+                Thread.sleep(1000);
+            }catch(Exception e){
+                System.out.println("Error in completing order");
+            }
 
-
-            entityManager.merge(runner.returnAssignedOrder());
             entityManager.merge(runner);
+            entityManager.merge(runner.returnAssignedOrder());
+
         }
     }
 

@@ -33,7 +33,7 @@ import com.redhat.project.util.Wrapper;
 @Consumes("application/json")
 @Produces("application/json")  
 @Path("/owner")
-@RolesAllowed("RESTUARANT_OWNER")
+@RolesAllowed("RESTAURANT_OWNER")
 public class OwnerApis{
     @Resource
     EJBContext context;
@@ -98,17 +98,3 @@ public class OwnerApis{
     }
    
 } 
-
-
-// {
-//     "value1": 1,
-//     "value2": [
-        //{
-//         "name": "kingAl-Tahrir",
-//         "price": 30.0,
-//     },{
-//         "name":"Family Meal",
-//         "price":150.0,
-//     }
-//]
-// }

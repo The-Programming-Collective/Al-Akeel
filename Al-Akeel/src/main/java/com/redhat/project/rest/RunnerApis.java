@@ -1,12 +1,11 @@
 package com.redhat.project.rest;
 
-import java.util.HashMap;
-import java.util.Map;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -15,7 +14,6 @@ import javax.ws.rs.QueryParam;
 import com.redhat.project.model.Runner;
 import com.redhat.project.services.RunnerController;
 import com.redhat.project.util.Authenticator;
-
 
 
 @Stateful
@@ -47,10 +45,8 @@ public class RunnerApis {
 
     @GET
     @Path("completedOrders")
-    public Map<String,Integer> getCompletedOrders(){
-        Map<String,Integer> map = new HashMap<String,Integer>();
-        map.put("completedOrders", runnerController.getCompletedOrdersCount());
-        return map;
+    public Integer getCompletedOrders(){
+        return runnerController.getCompletedOrdersCount();
     } 
 
 
@@ -60,4 +56,5 @@ public class RunnerApis {
         runnerController.completeOrder();
         return true;
     }
+    
 }

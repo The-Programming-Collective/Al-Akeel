@@ -17,12 +17,12 @@
     <version.com.mycyla.license>3.0</version.com.mycyla.license>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
 
     <version.spring.framework>4.3.10.RELEASE</version.spring.framework>
     <version.server.bom>7.1.0.GA</version.server.bom>
-
     <version.jboss.spec.javaee.7.0>1.1.0.Final-redhat-3</version.jboss.spec.javaee.7.0>
-
     <version.jaxws-tools-maven-plugin>1.2.0.Final</version.jaxws-tools-maven-plugin>
 
     <version.ro.isdc.wro4j>1.7.9</version.ro.isdc.wro4j>
@@ -35,6 +35,13 @@
 
   <dependencyManagement>
     <dependencies>
+
+      <dependency>
+        <groupId>com.thetransactioncompany</groupId>
+        <artifactId>cors-filter</artifactId>
+        <version>2.4</version>
+      </dependency>
+      
       <dependency>
         <groupId>com.h2database</groupId>
         <artifactId>h2</artifactId>
@@ -150,6 +157,12 @@
       <groupId>org.jboss.spec.javax.ws.rs</groupId>
       <artifactId>jboss-jaxrs-api_2.0_spec</artifactId>
       <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.thetransactioncompany</groupId>
+      <artifactId>cors-filter</artifactId>
+      <version>2.5</version>
     </dependency>
   </dependencies>
 

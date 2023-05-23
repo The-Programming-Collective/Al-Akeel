@@ -51,8 +51,8 @@ public class Meal implements Serializable {
     public void setId(int id) {this.id = id;}
     public void setName(String name) {if(name == null) return; this.name = name;}
     public void setPrice(Double price) {if(price == null) return; this.price = price;}
-    public void setRestaurant(Restaurant restaurant) {if(restaurant == null) return; this.restaurant = restaurant;}
-    public void setAvaliable(Boolean avaliable) {if(avaliable == null) return; this.avaliable = avaliable;}
+    public void setRestaurant(Restaurant restaurant) {this.restaurant = restaurant;}
+    public void setAvaliable(Boolean avaliable) {this.avaliable = avaliable;}
     
     
 }

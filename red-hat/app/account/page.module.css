@@ -1,0 +1,43 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 18px 56px;
+    gap: 5px;
+    border-radius: 10px;
+    background-color: #eeeeee;
+    border: 1px solid #000000;
+    position: absolute;
+    width: auto;
+    height: auto;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.h1{
+    font-weight: 700;
+    font-family: inherit;
+    font-size: 30px;
+    line-height: 36px;
+    color: #000000;
+}
+.grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    width: 100%;
+}
+.card{
+    display: inline;
+    width: 200px;
+    height: 100px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    color: #000000;
+    font-size: large;
+}
+.card:hover{
+    background-color: #eeeeee;
+}

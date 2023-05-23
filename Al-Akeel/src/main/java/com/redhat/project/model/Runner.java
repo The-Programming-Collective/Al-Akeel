@@ -1,16 +1,13 @@
 package com.redhat.project.model;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 
 @NamedQueries({
     @NamedQuery(name = "getRunner" , query = "SELECT r from Runner r where r.id = :runner_id"),

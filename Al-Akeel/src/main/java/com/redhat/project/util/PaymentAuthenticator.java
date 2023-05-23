@@ -1,11 +1,7 @@
 package com.redhat.project.util;
 
-
 import java.time.YearMonth;
 
-
-
-//TODO add date check
 public class PaymentAuthenticator {
 
     public boolean pay(CreditCardInfo ccd) {

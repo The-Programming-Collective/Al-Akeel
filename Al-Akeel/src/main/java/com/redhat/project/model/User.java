@@ -25,7 +25,7 @@ import javax.persistence.UniqueConstraint;
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"userName"}))
 @Entity
 public class User implements Serializable {
-    public enum Role{CUSTOMER, RESTUARANT_OWNER, RUNNER}
+    public enum Role{CUSTOMER, RESTAURANT_OWNER, RUNNER}
     
     public User() {}
     public User(String name, String userName){
