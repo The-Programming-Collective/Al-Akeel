@@ -36,7 +36,7 @@ export default function Page() {
 
     const handleCompleteOrder = (e: any) => {
         fetch('http://localhost:8080/Al-Akeel/api/runner/completeOrder', {
-            method: 'GET',
+            method: 'PUT',
             headers: {
                 accept: '*/*',
                 authorization: auth,
@@ -56,7 +56,7 @@ export default function Page() {
         console.log(fee);
         var url = 'http://localhost:8080/Al-Akeel/api/runner/fees?new_fees=' + fee;
         fetch(url, {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 accept: '*/*',
                 authorization: auth,

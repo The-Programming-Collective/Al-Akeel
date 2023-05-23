@@ -45,6 +45,9 @@ export default function Page() {
     const handleLogin = () => {
         localStorage.setItem('username', JSON.stringify(username));
         localStorage.setItem('password', JSON.stringify(password));
+
+        // sessionStorage.setItem('username', JSON.stringify(username));
+        // sessionStorage.setItem('password', JSON.stringify(password));
     }
 
 

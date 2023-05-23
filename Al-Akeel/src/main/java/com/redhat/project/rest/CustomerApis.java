@@ -63,7 +63,7 @@ public class CustomerApis {
     }
 
     
-    @POST
+    @PUT
     @Path("order")
     public boolean editOrder(Wrapper<Integer,Set<Integer>> orderWrapper){
         return customerController.editOrder(orderWrapper.value1, orderWrapper.value2);

@@ -41,31 +41,26 @@ export default function Page() {
     // TODO: fix this
     const handleCreate = (e: any) => {
         e.preventDefault();
-        // var itemName = itemNames.split(',').map(function (item: any) {
-            //     return parseArgs(item);
-            // });
-            // var itemPrice = itemPrices.split(',').map(function (item: any) {
-                //     return parseInt(item, 10);
-                // });
-                console.log(itemName);
-                fetch('http://localhost:8080/Al-Akeel/api/owner/createMenu', {
-                    method: 'POST',
-                    headers: {
-                        accept: '*/*',
-                        'Content-Type': 'application/json',
-                        authorization: auth
-                    },
-                    // body: JSON.stringify({
-                        //     itemNames: itemNames,
-                        //     itemPrices: itemPrices
-                        // })
-                    })
+        var itemsNames = itemNames.split(',');
+        var itemsPrices = itemPrices.split(',');
+        const result = itemsNames.map((name: any, index: string | number) => ({ name, price: itemsPrices[index] }));
+        const data = { value1:restaurantId, value2: result };
+        console.log(data);
+        fetch('http://localhost:8080/Al-Akeel/api/owner/menu', {
+            method: 'POST',
+            headers: {
+                accept: '*/*',
+                'Content-Type': 'application/json',
+                authorization: auth
+            },
+            body: JSON.stringify(data),
+            })
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
+                handleGetRestaurant(e);
             }
             );
-            
         }
         
 
@@ -116,6 +111,11 @@ export default function Page() {
     }
 
 
+    const handleReport = (e: any) => {
+
+    }
+
+
     return (
         <main>
             <nav className={styles.center}>
@@ -156,9 +156,9 @@ export default function Page() {
                     <h2>Create Menu: </h2>
                     <br></br>
                     <label className={styles.label}>Item Name: </label>
-                    <input className={styles.input} type="text" name="itemName" onChange={setItemNames} />
+                    <input className={styles.input} type="text" name="itemName" onChange={(e) => setItemNames(e.target.value)}/>
                     <label className={styles.label}>Item Price: </label>
-                    <input className={styles.input} type="text" name="itemPrice" onChange={setItemPrices} />
+                    <input className={styles.input} type="text" name="itemPrice" onChange={(e) => setItemPrices(e.target.value)}/>
                     <br></br>
                     <button className={styles.submit} onClick={handleCreate} type="submit">Submit</button>
                 </form>

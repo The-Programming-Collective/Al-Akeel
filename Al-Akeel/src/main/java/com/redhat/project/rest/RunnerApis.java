@@ -5,7 +5,8 @@ import javax.ejb.Stateful;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
+
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -13,7 +14,6 @@ import javax.ws.rs.QueryParam;
 import com.redhat.project.model.Runner;
 import com.redhat.project.services.RunnerController;
 import com.redhat.project.util.Authenticator;
-
 
 
 @Stateful
@@ -30,7 +30,7 @@ public class RunnerApis {
     Authenticator authenticator;
 
 
-    @POST
+    @PUT
     @Path("fees")
     public Boolean changeRunnerFees(@QueryParam("new_fees") Double new_fees){
         return runnerController.changeFees(new_fees);
@@ -50,9 +50,11 @@ public class RunnerApis {
     } 
 
 
-    @GET
+    @PUT
     @Path("completeOrder")
-    public boolean completeOrder(){
-        return runnerController.completeOrder();
+    public Boolean completeOrder(){
+        runnerController.completeOrder();
+        return true;
     }
+    
 }

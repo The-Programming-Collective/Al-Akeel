@@ -45,8 +45,6 @@ public class Apis {
 
     private boolean inited = false;
 
-    private Role loggedIn = null;
-
     private boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
     
     @GET    
@@ -219,21 +217,6 @@ public class Apis {
     @Path("login")
     public User login(){
         User user = authenticator.authenticate();
-        Role role = user.getRole();
-        switch (role){
-            case CUSTOMER:
-                this.loggedIn = Role.CUSTOMER;
-                // this.customerController.setCustomer(user);
-                break;
-            case RUNNER:
-                this.loggedIn = Role.RUNNER;
-                break;
-            case RESTUARANT_OWNER:
-                this.loggedIn = Role.RESTUARANT_OWNER;
-                break;
-            default:
-                break;
-        }
         return user;
     }
 
@@ -242,7 +225,6 @@ public class Apis {
     @Path("logout")
     public boolean logout(){
         try{
-            this.loggedIn = null;
             return true;
         }catch(Exception e){
             return false;

@@ -25,26 +25,18 @@ public class RunnerController {
     Authenticator authenticator;
     
   
-    public boolean completeOrder(){
+    public void completeOrder(){
         Runner runner = (Runner)authenticator.authenticate();
 
-        if (runner.getRunnerStatus()==RunnerStatus.BUSY){
+        if (runner.getRunnerStatus().equals(RunnerStatus.BUSY)){
             runner.setRunnerStatus(RunnerStatus.AVAILABLE);
             runner.returnAssignedOrder().setOrderStatus(OrderStatus.DELIVERED);
-        
-            entityManager.merge(runner);
+            
+
+
             entityManager.merge(runner.returnAssignedOrder());
-
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            return true;
+            entityManager.merge(runner);
         }
-        else
-            return false;
     }
 
     
