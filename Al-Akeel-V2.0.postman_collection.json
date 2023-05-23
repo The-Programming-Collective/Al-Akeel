@@ -1,0 +1,754 @@
+{
+	"info": {
+		"_postman_id": "531e70bb-d549-48c5-b38f-afe32aa792fd",
+		"name": "Al-Akeel-V2.0",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25094392"
+	},
+	"item": [
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "customer get restaurants",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "faris",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "faris",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/customer/restaurants",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"customer",
+								"restaurants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "make order",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "faris",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "faris",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"value1\": {\r\n        \"CCN\":1234567891234567,\r\n        \"DATE\": \"12/30\",\r\n        \"CVV\": \"123\"   \r\n    },\r\n\r\n    \"value2\": {\r\n        \"value1\": 2,\r\n        \"value2\": [1,2,3]\r\n\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/customer/order",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"customer",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "customer edit order",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "faris",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "faris",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"value1\":\"3\",\r\n    \"value2\":[1,2]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/customer/order",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"customer",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "customer get orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/customer/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"customer",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "password",
+						"value": "faris",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "faris",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Runner",
+			"item": [
+				{
+					"name": "Get and set runner in controller",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "youssef",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "youssef",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/runner",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"runner"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "runner change fees",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "youssef",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "youssef",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/runner/fees?new_fees=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"runner",
+								"fees"
+							],
+							"query": [
+								{
+									"key": "new_fees",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get number of completed orders",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "youssef",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "youssef",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/runner/completedOrders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"runner",
+								"completedOrders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "complete assigned order",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "youssef",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "youssef",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/runner/completeOrder",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"runner",
+								"completeOrder"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "password",
+						"value": "youssef",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "youssef",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Owner",
+			"item": [
+				{
+					"name": "getOrdersList",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/owner/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"owner",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get restaurant (sets restaurant)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/owner/restaurant?restaurant_id=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"owner",
+								"restaurant"
+							],
+							"query": [
+								{
+									"key": "restaurant_id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addMenuMeal",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"value1\": 2,\n    \"value2\": {\n        \"name\": \"twisterTest\",\n        \"price\": 69\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/owner/meal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"owner",
+								"meal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete meal from meal list",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/owner/meal?retaurant_id=2&meal_id=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"owner",
+								"meal"
+							],
+							"query": [
+								{
+									"key": "retaurant_id",
+									"value": "2"
+								},
+								{
+									"key": "meal_id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update meal",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \n    \"value1\":{\n        \"value1\":2,\n        \"value2\":4\n    },\n    \"value2\": {\n       \n        \"name\": \"family bucket 12 pcs\",\n        \"price\": 500\n \n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/owner/meal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"owner",
+								"meal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set Restaurant Menu",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"value1\": 2,\n    \"value2\": [{\n        \"name\": \"kingAl-Tahrir\",\n        \"price\": 30.0\n    },{\n        \"name\":\"Family Meal\",\n        \"price\":150.0\n    }]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/owner/menu",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"owner",
+								"menu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get restaurant report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Al-Akeel/api/owner/report?restaurant_id=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Al-Akeel",
+								"api",
+								"owner",
+								"report"
+							],
+							"query": [
+								{
+									"key": "restaurant_id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "password",
+						"value": "hecker",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "hecker",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "init databases",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/Al-Akeel/api/initialization",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Al-Akeel",
+						"api",
+						"initialization"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "signup",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"mostafa\",\r\n    \"userName\":\"mostafa-hesham\",\r\n    \"password\":\"mostafa-hesham\",\r\n    \"role\":\"RUNNER\",\r\n    \"fees\":\"20\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/Al-Akeel/api/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Al-Akeel",
+						"api",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "mostafa-hesham",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "mostafa-hesham",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/Al-Akeel/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Al-Akeel",
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/Al-Akeel/api/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Al-Akeel",
+						"api",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

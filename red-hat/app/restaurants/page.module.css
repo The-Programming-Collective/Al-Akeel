@@ -39,8 +39,21 @@
     position: absolute;
     width: auto;
     left: 50%;
-    top: 100%;
+    top: 150%;
     transform: translate(-50%, -90%);
+}
+
+.footer{
+    display: flex;
+    justify-content: center;
+    margin-top: 80%;
+    align-items: center;
+    position: relative;
+    padding: 4rem 0;
+    font-size: 30px;
+    font-family: inherit;
+    font-weight: 700;
+    top: 200%;
 }
 
 .form {

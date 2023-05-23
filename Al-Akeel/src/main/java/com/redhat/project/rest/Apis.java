@@ -66,7 +66,7 @@ public class Apis {
 
             
             User owner = new User("mostafa", "mainUseless");
-            owner.setRole(Role.RESTUARANT_OWNER);
+            owner.setRole(Role.RESTAURANT_OWNER);
             executeServerAdd("mainUseless","mainUseless",owner.getRole().toString());
 
             Restaurant res = new Restaurant("koshary el tahrir");
@@ -78,7 +78,7 @@ public class Apis {
             
             
             User owner2 = new User("kemol", "hecker");
-            owner2.setRole(Role.RESTUARANT_OWNER);
+            owner2.setRole(Role.RESTAURANT_OWNER);
             executeServerAdd("hecker","hecker",owner2.getRole().toString());
 
             Restaurant res2 = new Restaurant("KFC");

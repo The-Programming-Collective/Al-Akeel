@@ -8,9 +8,7 @@ import Link from 'next/link';
 export default function Page() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-
     const auth = 'Basic ' + btoa(username + ':' + password);
-    console.log(auth);
 
 
     const handleSubmit = (e: { preventDefault: () => void; }) => {
@@ -21,7 +19,7 @@ export default function Page() {
             headers: {
                 accept: '*/*',
                 'Content-Type': 'application/json',
-                authorization: 'Basic ' + btoa(username + ':' + password)
+                authorization: auth,
             },
         })
             .then((response) => response.json())
@@ -43,11 +41,8 @@ export default function Page() {
     }
 
     const handleLogin = () => {
-        localStorage.setItem('username', JSON.stringify(username));
-        localStorage.setItem('password', JSON.stringify(password));
-
-        // sessionStorage.setItem('username', JSON.stringify(username));
-        // sessionStorage.setItem('password', JSON.stringify(password));
+        sessionStorage.setItem('username', username);
+        sessionStorage.setItem('password', password);
     }
 
 

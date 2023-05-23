@@ -3,6 +3,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+    margin-top: 10%;
     padding: 18px 56px;
     gap: 5px;
     border-radius: 10px;
@@ -11,25 +12,10 @@
     position: absolute;
     width: auto;
     left: 50%;
-    top: 80%;
+    top: 90%;
     transform: translate(-50%, -60%);
-}
-
-.main2{
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
-    padding: 18px 56px;
-    gap: 5px;
-    border-radius: 10px;
-    background-color: #eeeeee;
-    border: 1px solid #000000;
-    position: absolute;
-    width: auto;
-    left: 50%;
-    top: auto;
-    transform: translate(-50%, -60%);
 }
 
 .list {
@@ -43,9 +29,49 @@
     width: auto;
 }
 
-.center{
+.footer{
     display: flex;
     justify-content: center;
+    margin-top: 80%;
+    align-items: center;
+    position: relative;
+    padding: 4rem 0;
+    font-size: 30px;
+    font-family: inherit;
+    font-weight: 700;
+}
+
+.popup{
+    font-family: inherit;
+    background-color: #adadad;
+    border-radius: 10px;
+    border: 1px solid #000000;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.close{
+    font-family: inherit;
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #000000;
+    padding-left: 10%;
+    padding-right: 10%;
+    position: relative;
+    margin-left: 10px;
+    color: red;
+}
+
+.close:hover{
+    background-color: #aa1313;
+    color: white;
+}
+
+.center{
+    display: flex;
+    position: relative;
+    justify-content: center;
+    margin-top: 1%;
     align-items: center;
     position: relative;
     padding: 4rem 0;

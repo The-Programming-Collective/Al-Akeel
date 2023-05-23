@@ -1,18 +1,19 @@
-import Image from 'next/image'
+'use client';
+
 import styles from './page.module.css'
 
 const init = () => {
   fetch('http://localhost:8080/Al-Akeel/api/initialization', {
-    method: 'GET'
+    method: 'GET',
+    headers: {
+      accept: '*/*',
+      'Content-Type': 'application/json',
+    },
   }) 
   .then((response) => response.json())
   .then((data) => {
     console.log(data);
   })
-  .catch((error) => {
-    console.log(error);
-  }
-  );
 }
 
 export default function Home() {

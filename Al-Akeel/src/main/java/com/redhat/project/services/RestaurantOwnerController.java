@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.ws.rs.QueryParam;
 
 import com.redhat.project.model.Meal;
 import com.redhat.project.model.Orders;
@@ -19,11 +18,6 @@ import com.redhat.project.util.Authenticator;
 import com.redhat.project.model.Restaurant;
 import com.redhat.project.model.User;
 
-// ■ Create restaurant menu [DONE]
-// ■ Edit restaurant: change menu meals for each restaurant [DONE]
-// ■ Get restaurant details by id [DONE]
-// ■ Create restaurant report: given a restaurant id print [DONE]
-// how much the restaurant earns (summation of total amount of all completed orders) , Number of completed orders, Number of canceled orders
 
 @Stateless
 public class RestaurantOwnerController {
@@ -87,9 +81,17 @@ public class RestaurantOwnerController {
     public void addMenuMeal(int restaurant_id, Meal meal){
         Restaurant restaurant = getRestaurant(restaurant_id);
         meal.setRestaurant(restaurant);
-        meal.setAvaliable(true);
         restaurant.addMeal(meal);
+        meal.setAvaliable(true);
+
+        try{
+            Thread.sleep(1000);
+        }catch(Exception e){
+            System.out.println("Error in completing order");
+        }
+
         entityManager.persist(meal);
+        entityManager.merge(restaurant);
     }
 
 
@@ -151,7 +153,7 @@ public class RestaurantOwnerController {
     }
 
 
-    public List<Orders> getOrders(@QueryParam("restaurant_id") int restaurant_id){
+    public List<Orders> getOrders(int restaurant_id){
         TypedQuery<Orders> query = entityManager.createNamedQuery("getOrdersList", Orders.class);
         query.setParameter("restaurant_id", restaurant_id);
         return query.getResultList();

@@ -16,6 +16,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -32,7 +33,7 @@ import com.redhat.project.util.Wrapper;
 @Consumes("application/json")
 @Produces("application/json")  
 @Path("/owner")
-@RolesAllowed("RESTUARANT_OWNER")
+@RolesAllowed("RESTAURANT_OWNER")
 public class OwnerApis{
     @Resource
     EJBContext context;
@@ -76,7 +77,7 @@ public class OwnerApis{
     }
 
 
-    @POST
+    @PUT
     @Path("meal")
     public boolean updateMeal(Wrapper<Wrapper<Integer,Integer>,Meal> obj){
         return restaurantOwnerController.updateMenuMeal(obj.value1.value1,obj.value1.value2,obj.value2);

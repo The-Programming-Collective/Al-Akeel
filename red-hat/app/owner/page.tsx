@@ -3,12 +3,12 @@
 import React, { useEffect, useState } from 'react'
 import styles from './page.module.css'
 import Link from 'next/link';
-import { parseArgs } from 'util';
+import Popup from 'reactjs-popup';
 
 
-export default function Page() {
-    const [username, setUsername] = useState<any>(localStorage.getItem('username')?.replaceAll('"', ''));
-    const [password, setPassword] = useState<any>(localStorage.getItem('password')?.replaceAll('"', ''));
+export default function Page(this: any) {
+    const [username, setUsername] = useState<any>(sessionStorage.getItem('username')?.replaceAll('"', ''));
+    const [password, setPassword] = useState<any>(sessionStorage.getItem('password')?.replaceAll('"', ''));
     const [itemNames, setItemNames] = useState<any>([]);
     const [itemName, setItemName] = useState<any>('');
     const [itemPrices, setItemPrices] = useState<any>([]);
@@ -17,14 +17,16 @@ export default function Page() {
     const [restaurant, setRestaurant] = useState<any>('');
     const [deleteMealId, setDeletedMealId] = useState<any>('');
     const [mealId, setMealId] = useState<any>([]);
-    // const auth = 'Basic ' + btoa(username + ':' + password);
-    const auth = 'Basic aGVja2VyOmhlY2tlcg=='
+    const [earnings, setEarnings] = useState<number>();
+    const [completedOrders, setCompletedOrders] = useState<number>();
+    const [canceledOrders, setCanceledOrders] = useState<number>();
+    const [open, setOpen] = useState(false);
+    const auth = 'Basic ' + btoa(username + ':' + password);
 
 
     const handleGetRestaurant = (e: any) => {
         var url = 'http://localhost:8080/Al-Akeel/api/owner/restaurant?restaurant_id=' + restaurantId;
         e.preventDefault();
-        // console.log(url);
         fetch(url, {
             method: 'GET',
             headers: {
@@ -38,14 +40,21 @@ export default function Page() {
             });
     };
 
-    // TODO: fix this
+
     const handleCreate = (e: any) => {
         e.preventDefault();
         var itemsNames = itemNames.split(',');
         var itemsPrices = itemPrices.split(',');
+
+        if (itemsNames.length != itemsPrices.length) {
+            alert("Please enter the same number of items and prices");
+            return;
+        }
+
         const result = itemsNames.map((name: any, index: string | number) => ({ name, price: itemsPrices[index] }));
-        const data = { value1:restaurantId, value2: result };
+        const data = { value1: restaurantId, value2: result };
         console.log(data);
+
         fetch('http://localhost:8080/Al-Akeel/api/owner/menu', {
             method: 'POST',
             headers: {
@@ -54,20 +63,20 @@ export default function Page() {
                 authorization: auth
             },
             body: JSON.stringify(data),
-            })
+        })
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
                 handleGetRestaurant(e);
             }
             );
-        }
-        
+    }
+
 
     const handleAdd = (e: any) => {
         e.preventDefault();
-        console.log(JSON.stringify(itemName));
-        console.log(JSON.stringify(itemPrice));
+        console.log(itemName);
+        console.log(itemPrice);
         let data = { value1: parseInt(restaurantId, 10), value2: { name: itemName, price: parseInt(itemPrice, 10) } };
         console.log(data);
         fetch('http://localhost:8080/Al-Akeel/api/owner/meal', {
@@ -90,7 +99,7 @@ export default function Page() {
 
     const handleRemove = (e: any) => {
         e.preventDefault();
-        let url = 'http://localhost:8080/Al-Akeel/api/owner/meal?retaurant_id='+restaurantId+'&meal_id='+deleteMealId;
+        let url = 'http://localhost:8080/Al-Akeel/api/owner/meal?retaurant_id=' + restaurantId + '&meal_id=' + deleteMealId;
         console.log(url);
         fetch(url, {
             method: 'DELETE',
@@ -107,12 +116,33 @@ export default function Page() {
                 console.log(data);
                 handleGetRestaurant(e);
             }
-            ).catch((error) => {console.log(error);});
+            ).catch((error) => { console.log(error); });
     }
 
 
-    const handleReport = (e: any) => {
-
+    const handleGetReport = (e: any) => {
+        e.preventDefault();
+        var url = "http://localhost:8080/Al-Akeel/api/owner/report?restaurant_id=" + restaurantId;
+        console.log(url);
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                "Access-Control-Allow-Methods": "GET, PUT, POST, DELETE",
+                'Access-Control-Allow-Origin': '*',
+                authorization: auth,
+                accept: '*/*',
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                setOpen(true);
+                setEarnings(data.earnings);
+                setCompletedOrders(data.completedOrders);
+                setCanceledOrders(data.canceledOrders);
+            }
+            ).catch((error) => { console.log(error); });
     }
 
 
@@ -137,6 +167,15 @@ export default function Page() {
                     <br></br>
                     <button className={styles.submit} onClick={handleGetRestaurant} type="submit">Submit</button>
                 </form>
+                <button className={styles.submit} onClick={handleGetReport} type="submit">Get Report</button>
+                <Popup open={open} modal>
+                    <div className={styles.popup}>
+                        <button className={styles.close} onClick={() => setOpen(false)}>&times;</button>
+                        <h3>Earnings: {earnings}</h3>
+                        <h3>Number of Completed Orders: {completedOrders}</h3>
+                        <h3>Number of Canceled Orders: {canceledOrders}</h3>
+                    </div>
+                </Popup>
                 <div>
                     <h2>Restaurant: </h2>
                     <br></br>
@@ -155,10 +194,10 @@ export default function Page() {
                 <form className={styles.form}>
                     <h2>Create Menu: </h2>
                     <br></br>
-                    <label className={styles.label}>Item Name: </label>
-                    <input className={styles.input} type="text" name="itemName" onChange={(e) => setItemNames(e.target.value)}/>
-                    <label className={styles.label}>Item Price: </label>
-                    <input className={styles.input} type="text" name="itemPrice" onChange={(e) => setItemPrices(e.target.value)}/>
+                    <label className={styles.label}>Item Names: </label>
+                    <input placeholder='Pizza,Pasta,Icecream' className={styles.input} type="text" name="itemName" onChange={(e) => setItemNames(e.target.value)} />
+                    <label className={styles.label}>Item Prices: </label>
+                    <input placeholder='20,35,3.5' className={styles.input} type="text" name="itemPrice" onChange={(e) => setItemPrices(e.target.value)} />
                     <br></br>
                     <button className={styles.submit} onClick={handleCreate} type="submit">Submit</button>
                 </form>
@@ -180,6 +219,10 @@ export default function Page() {
                     <br></br>
                     <button className={styles.submit} onClick={handleRemove} type="submit">Submit</button>
                 </form>
+            </div>
+            <div className={styles.footer}>
+                <h1 className={styles.h1}>Al-Akeel - </h1>
+                <p className={styles.p}>All rights reserved</p>
             </div>
         </main>
     )

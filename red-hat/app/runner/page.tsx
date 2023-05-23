@@ -6,8 +6,8 @@ import Link from 'next/link';
 
 
 export default function Page() {
-    const [username, setUsername] = useState<any>(localStorage.getItem('username')?.replaceAll('"', ''));
-    const [password, setPassword] = useState<any>(localStorage.getItem('password')?.replaceAll('"', ''));
+    const [username, setUsername] = useState<any>(sessionStorage.getItem('username')?.replaceAll('"', ''));
+    const [password, setPassword] = useState<any>(sessionStorage.getItem('password')?.replaceAll('"', ''));
     const [completedOrders, setCompletedOrders] = useState<any>([]);
     const [fee, setFee] = useState<any>('');
 
@@ -62,7 +62,6 @@ export default function Page() {
                 authorization: auth,
                 'Content-Type': 'application/json',
             },
-            // body: JSON.stringify({new_fees: fee})
         })
             .then((response) => response.json())
             .then((data) => {
@@ -82,6 +81,7 @@ export default function Page() {
             <div className={styles.main}>
                 <h1 className={styles.h1}>Runner Account</h1>
                 <br></br>
+                <h2>Username: {username}</h2>
                 <h2>Number of completed Orders: {completedOrders}</h2>
                 <br></br>
                 <button className={styles.submit} type='submit' onClick={handleCompleteOrder}>Complete Order</button>

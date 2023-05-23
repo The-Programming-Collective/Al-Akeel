@@ -33,7 +33,7 @@ public class Orders implements Serializable{
     private String name;
     private OrderStatus orderStatus;
     private String date;   
-    private Double totalPrice=0.0; 
+    private Double totalPrice=-1.0; 
     
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -99,7 +99,7 @@ public class Orders implements Serializable{
 
     
     public double getTotalPrice() {
-        if(orderStatus != OrderStatus.DELIVERED){
+        if(orderStatus != OrderStatus.DELIVERED || totalPrice == -1.0){
             totalPrice =  0.0;
             for(Meal meal : itemsList){
                 totalPrice+= meal.getPrice();
